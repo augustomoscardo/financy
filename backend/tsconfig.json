@@ -7,18 +7,30 @@
       "src"
     ],
     "outDir": "dist",
+    // "lib": [
+    //   "es2024",
+    //   "ESNext.Array",
+    //   "ESNext.Collection",
+    //   "ESNext.Iterator",
+    //   "ESNext.Promise"
+    // ],
+    // "target": "es2024",
+    // "module": "nodenext",
+    "target": "es2023",
+    "module": "esnext",
     "lib": [
-      "es2024",
-      "ESNext.Array",
-      "ESNext.Collection",
-      "ESNext.Iterator",
-      "ESNext.Promise"
+      "ES2023",
+      "DOM"
     ],
-    "module": "nodenext",
-    "target": "es2024",
     "strict": true,
     "esModuleInterop": true,
     "skipLibCheck": true,
-    "moduleResolution": "node16"
+    // "moduleResolution": "node16",
+    "moduleResolution": "node",
+    "types": [
+      "node"
+    ],
+    "emitDecoratorMetadata": true,
+    "experimentalDecorators": true
   }
 }

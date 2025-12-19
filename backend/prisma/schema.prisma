@@ -2,12 +2,12 @@
 // learn more about it in the docs: https://pris.ly/d/prisma-schema
 
 generator client {
-  provider = "prisma-client"
-  output   = "../prisma/generated/prisma"
+  provider = "prisma-client-js"
 }
 
 datasource db {
   provider = "sqlite"
+  url      = env("DATABASE_URL")
 }
 
 model User {
@@ -18,37 +18,6 @@ model User {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  Transaction Transaction[]
-  categories  Category[]
-}
-
-model Category {
-  id        String   @id @default(uuid())
-  name      String
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-
-  userId String
-
-  user         User          @relation(fields: [userId], references: [id], onDelete: Cascade)
-  transactions Transaction[]
-}
-
-enum TransactionType {
-  income
-  outcome
-}
-
-model Transaction {
-  id         String          @id @default(uuid())
-  title      String
-  amount     Float
-  type       TransactionType
-  createdAt  DateTime        @default(now())
-  updatedAt  DateTime        @updatedAt
-  userId     String
-  categoryId String
-
-  user     User     @relation(fields: [userId], references: [id])
-  category Category @relation(fields: [categoryId], references: [id])
+  // Transaction Transaction[]
+  // categories  Category[]
 }
