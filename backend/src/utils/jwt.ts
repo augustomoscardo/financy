@@ -1,0 +1,25 @@
+import jwt, { type Secret, type SignOptions } from "jsonwebtoken"
+
+export type JWTPayload = { id: string, email: string }
+
+export const signJwt = (payload: JWTPayload, expiresIn?: string) => {
+  const secret: Secret = process.env.JWT_SECRET as Secret
+
+  let options: SignOptions = {}
+
+  const expiration = expiresIn
+
+  if (expiration) {
+    options = {
+      expiresIn: expiration as unknown as NonNullable<SignOptions["expiresIn"]>
+    }
+  }
+
+  return jwt.sign(payload, secret, options)
+}
+
+export const verifyJwt = (token: string) => {
+  const secret = process.env.JWT_SECRET as Secret
+
+  return jwt.verify(token, secret) as JWTPayload
+}

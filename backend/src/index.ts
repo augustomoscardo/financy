@@ -1,14 +1,16 @@
+import "reflect-metadata"
 import { ApolloServer } from "@apollo/server"
 import express from "express"
 import { expressMiddleware } from "@as-integrations/express5"
 import { buildSchema } from "type-graphql"
 import cors from "cors"
+import { AuthResolver } from "./resolvers/auth.resolver"
 
-const PORT = 4444
+const PORT = 3333
 
 async function bootStrap() {
   const schema = await buildSchema({
-    resolvers: [],
+    resolvers: [AuthResolver],
     validate: false,
     emitSchemaFile: "./schema.graphql"
   })
@@ -18,7 +20,7 @@ async function bootStrap() {
 
   const app = express()
   app.use(express.json())
-  app.use(cors())
+  app.use(cors({ origin: "*" }))
 
   app.use("/graphql", expressMiddleware(server))
 
@@ -26,4 +28,3 @@ async function bootStrap() {
 }
 
 bootStrap()
-
