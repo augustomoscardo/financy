@@ -17,8 +17,8 @@ export class AuthResolver {
     return this.authService.register(data)
   }
 
-  // @Mutation(() => LoginOutput)
-  // async login(@Arg("data", () => LoginInput) data: LoginInput): Promise<LoginOutput> {
-  //   return this.authService
-  // }
+  @Mutation(() => LoginOutput)
+  async login(@Arg("data", () => LoginInput) data: LoginInput): Promise<LoginOutput> {
+    return this.authService.login(data)
+  }
 }
