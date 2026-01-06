@@ -5,12 +5,13 @@ import { expressMiddleware } from "@as-integrations/express5"
 import { buildSchema } from "type-graphql"
 import cors from "cors"
 import { AuthResolver } from "./resolvers/auth.resolver"
+import { UserResolver } from "./resolvers/user.resolver"
 
 const PORT = 3333
 
 async function bootStrap() {
   const schema = await buildSchema({
-    resolvers: [AuthResolver],
+    resolvers: [AuthResolver, UserResolver],
     validate: false,
     emitSchemaFile: "./schema.graphql"
   })
