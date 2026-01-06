@@ -1,6 +1,7 @@
-import { Resolver, Mutation, Arg, Query } from 'type-graphql';
+import { Resolver, Mutation, Arg, Query, UseMiddleware } from 'type-graphql';
 import { UserService } from '../services/user.service';
 import { UserModel } from '../models/user.model';
+import { isAuth } from '../middlewares/auth.middleware';
 
 @Resolver()
 export class UserResolver {
@@ -12,6 +13,7 @@ export class UserResolver {
   }
 
   @Query(() => [UserModel])
+  @UseMiddleware(isAuth)
   async getAllUsers(): Promise<UserModel[]> {
     return this.userService.listUsers()
   }

@@ -6,6 +6,7 @@ import { buildSchema } from "type-graphql"
 import cors from "cors"
 import { AuthResolver } from "./resolvers/auth.resolver"
 import { UserResolver } from "./resolvers/user.resolver"
+import { buildContext } from "./graphql/context"
 
 const PORT = 3333
 
@@ -23,7 +24,9 @@ async function bootStrap() {
   app.use(express.json())
   app.use(cors({ origin: "*" }))
 
-  app.use("/graphql", expressMiddleware(server))
+  app.use("/graphql", expressMiddleware(server, {
+    context: buildContext
+  }))
 
   app.listen(PORT, () => console.log(`Server is running on localhost:${PORT}`))
 }
