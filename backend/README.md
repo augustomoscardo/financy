@@ -7,8 +7,8 @@
 - [] Deve ser possível editar uma transação
 - [] Deve ser possível listar todas as transações
 - [x] Deve ser possível criar uma categoria
-- [] Deve ser possível deletar uma categoria
-- [] Deve ser possível editar uma categoria
+- [x] Deve ser possível deletar uma categoria
+- [x] Deve ser possível editar uma categoria
 - [x] Deve ser possível listar todas as categorias
 
 ## Tools
