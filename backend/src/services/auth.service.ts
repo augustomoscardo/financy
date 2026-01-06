@@ -3,7 +3,6 @@ import { prismaClient } from "../lib/prisma";
 import { RegisterInput, type LoginInput } from "../dtos/input/auth.input";
 import { comparePassword, hashPassword } from "../utils/hash";
 import { signJwt } from "../utils/jwt";
-import { compare } from "bcryptjs";
 
 export class AuthService {
   async register(data: RegisterInput) {
