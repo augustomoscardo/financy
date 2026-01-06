@@ -3,7 +3,7 @@ import { prismaClient } from "../lib/prisma";
 
 export class CategoryService {
   async createCategory(data: CategoryInput, userId: string) {
-    return prismaClient.category.create({
+    return await prismaClient.category.create({
       data: {
         name: data.name,
         color: data.color,
@@ -14,9 +14,64 @@ export class CategoryService {
   }
 
   async getCategoriesByUserId(userId: string) {
-    return prismaClient.category.findMany({
+    return await prismaClient.category.findMany({
       where: {
         userId
+      }
+    })
+  }
+
+  async findCategoryById(id: string) {
+    const category = await prismaClient.category.findUnique({
+      where: {
+        id
+      }
+    })
+
+    if (!category) {
+      throw new Error("Category not found")
+    }
+
+    return category
+  }
+
+  async updateCategory(id: string, data: CategoryInput) {
+    const category = await prismaClient.category.findUnique({
+      where: {
+        id
+      }
+    })
+
+    if (!category) {
+      throw new Error("Category not found")
+    }
+
+    return prismaClient.category.update({
+      where: {
+        id
+      },
+      data: {
+        name: data.name,
+        color: data.color,
+        icon: data.icon,
+      }
+    })
+  }
+
+  async deleteCategory(categoryId: string) {
+    const category = await prismaClient.category.findUnique({
+      where: {
+        id: categoryId
+      }
+    })
+
+    if (!category) {
+      throw new Error("Category not found")
+    }
+
+    return await prismaClient.category.delete({
+      where: {
+        id: categoryId
       }
     })
   }

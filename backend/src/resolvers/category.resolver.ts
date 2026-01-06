@@ -30,6 +30,22 @@ export class CategoryResolver {
     return this.categoryService.createCategory(data, user.id)
   }
 
+  @Mutation(() => CategoryModel)
+  async updateCategory(
+    @Arg("id", () => String) id: string,
+    @Arg("data", () => CategoryInput) data: CategoryInput
+  ): Promise<CategoryModel> {
+    return this.categoryService.updateCategory(id, data)
+  }
+
+  @Mutation(() => Boolean)
+  async deleteCategory(
+    @Arg("id", () => String) id: string
+  ) {
+    await this.categoryService.deleteCategory(id)
+    return true
+  }
+
   @FieldResolver(() => UserModel)
   async user(@Root() category: CategoryModel): Promise<UserModel> {
     return this.userService.findUser(category.userId)
