@@ -12,10 +12,10 @@ export class CategoryModel {
   name!: string;
 
   @Field(() => String, { nullable: true })
-  color?: string;
+  color?: string | null;
 
   @Field(() => String, { nullable: true })
-  icon?: string;
+  icon?: string | null;
 
   @Field(() => [TransactionModel], { nullable: true })
   transactions?: TransactionModel[];

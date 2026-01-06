@@ -7,12 +7,13 @@ import cors from "cors"
 import { AuthResolver } from "./resolvers/auth.resolver"
 import { UserResolver } from "./resolvers/user.resolver"
 import { buildContext } from "./graphql/context"
+import { CategoryResolver } from "./resolvers/category.resolver"
 
 const PORT = 3333
 
 async function bootStrap() {
   const schema = await buildSchema({
-    resolvers: [AuthResolver, UserResolver],
+    resolvers: [AuthResolver, UserResolver, CategoryResolver],
     validate: false,
     emitSchemaFile: "./schema.graphql"
   })
