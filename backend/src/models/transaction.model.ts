@@ -1,17 +1,12 @@
 import { Field, Float, GraphQLISODateTime, ID, ObjectType, registerEnumType } from "type-graphql";
 import { UserModel } from "./user.model";
 import { CategoryModel } from "./category.model";
-
-export enum TransactionType {
-  income = "income",
-  outcome = "outcome",
-}
+import { TransactionType } from "@prisma/client";
 
 registerEnumType(TransactionType, {
   name: "TransactionType",
   description: "Type of transaction: income or outcome",
 })
-
 
 @ObjectType()
 export class TransactionModel {
@@ -22,7 +17,7 @@ export class TransactionModel {
   title!: string;
 
   @Field(() => String, { nullable: true })
-  description?: string;
+  description?: string | null;
 
   @Field(() => Float)
   amount!: number;

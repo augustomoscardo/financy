@@ -21,7 +21,7 @@ export class CategoryService {
     })
   }
 
-  async findCategoryById(id: string) {
+  async findCategoryById(id: string, userId: string) {
     const category = await prismaClient.category.findUnique({
       where: {
         id
@@ -32,10 +32,14 @@ export class CategoryService {
       throw new Error("Category not found")
     }
 
+    if (category.userId !== userId) {
+      throw new Error("You don't have permission to access this category")
+    }
+
     return category
   }
 
-  async updateCategory(id: string, data: CategoryInput) {
+  async updateCategory(id: string, data: CategoryInput, userId: string) {
     const category = await prismaClient.category.findUnique({
       where: {
         id
@@ -44,6 +48,10 @@ export class CategoryService {
 
     if (!category) {
       throw new Error("Category not found")
+    }
+
+    if (category.userId !== userId) {
+      throw new Error("You don't have permission to update this category")
     }
 
     return prismaClient.category.update({
@@ -58,7 +66,7 @@ export class CategoryService {
     })
   }
 
-  async deleteCategory(categoryId: string) {
+  async deleteCategory(categoryId: string, userId: string) {
     const category = await prismaClient.category.findUnique({
       where: {
         id: categoryId
@@ -67,6 +75,10 @@ export class CategoryService {
 
     if (!category) {
       throw new Error("Category not found")
+    }
+
+    if (category.userId !== userId) {
+      throw new Error("You don't have permission to delete this category")
     }
 
     return await prismaClient.category.delete({
