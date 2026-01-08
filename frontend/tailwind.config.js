@@ -17,8 +17,53 @@ export default {
   			'2xl': '1400px'
   		}
   	},
+		// colors: {},
   	extend: {
+			fontFamily: {
+				sans: ['Inter', 'sans-serif'],
+			},
   		colors: {
+				/* Project colors definition */
+				//brand
+				'brand-dark': '#124B2B',
+				'brand-base': "#1F6F43",
+				//gray
+				'gray-800': '#111827',
+				'gray-700': '#374151',
+				'gray-600': '#4B5563',
+				'gray-500': '#6B7280',
+				'gray-400': '#9CA3AF',
+				'gray-300': '#D1D5DB',
+				'gray-200': '#E5E7EB',
+				'gray-100': '#F8F9FA',
+				//neutral
+				'black': '#000000',
+				'white': '#FFFFFF',
+				'success': '#19AD70',
+				'danger': '#EF4444',
+				//colors
+				'blue-dark': '#1D4ED8',
+				'blue-base': '#2563EB',
+				'blue-light': '#DBEAFE',
+				'purple-dark': '#7E22CE',
+				'purple-base': '#9333EA',
+				'purple-light': '#F3E8FF',
+				'pink-dark': '#BE185D',
+				'pink-base': '#DB2777',
+				'pink-light': '#FCE7F3',
+				'red-dark': '#B91C1C',
+				'red-base': '#DC2626',
+				'red-light': '#FEE2E2',
+				'orange-dark': '#C2410C',
+				'orange-base': '#EA580C',
+				'orange-light': '#FFEDD5',
+				'yellow-dark': '#A16207',
+				'yellow-base': '#CA8A04',
+				'yellow-light': '#F7F3CA',
+				'green-dark': '#15803D',
+				'green-base': '#16A34A',
+				'green-light': '#E0FAE9',
+
   			border: 'hsl(var(--border))',
   			input: 'hsl(var(--input))',
   			ring: 'hsl(var(--ring))',
