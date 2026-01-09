@@ -1,12 +1,15 @@
+import { Login } from "@/pages/auth/login";
+import { Layout } from "./components/layout";
 
+import { Routes, Route } from "react-router-dom"
 
-function App() {
+export default function App() {
 
   return (
-    <>
-      <h1>Hello world</h1>
-    </>
+    <Layout>
+      <Routes>
+        <Route path="/login" element={<Login />} />
+      </Routes>
+    </Layout>
   )
 }
-
-export default App
