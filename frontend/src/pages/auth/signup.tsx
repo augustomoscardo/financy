@@ -15,6 +15,8 @@ import { EyeClosed, Lock, LogIn, Mail, UserRound } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Link } from "react-router-dom";
 import { Separator } from "@/components/ui/separator";
+import { useAuthStore } from "@/stores/auth";
+import { toast } from "sonner";
 
 const signupFormSchema = z.object({
   name: z
@@ -39,6 +41,8 @@ const signupFormSchema = z.object({
 type SignupFormData = z.infer<typeof signupFormSchema>;
 
 export function Signup() {
+  const signup = useAuthStore((state) => state.signup)
+
   const form = useForm<SignupFormData>({
     resolver: zodResolver(signupFormSchema),
     defaultValues: {
@@ -53,7 +57,21 @@ export function Signup() {
   async function handleSignup(data: SignupFormData) {
     console.log(data);
 
-    await new Promise((resolve) => setTimeout(resolve, 2000));
+    try {
+      const signupMutate = await signup({
+        name: data.name,
+        email: data.email,
+        password: data.password,
+      })
+
+      if (signupMutate) {
+        toast.success("Acount created successfully! You can now log in.")
+      }
+
+    } catch (error: unknown) {
+      toast.error("Failed to create account. Please try again.")
+      console.log(error);
+    }
   }
 
   return (
@@ -84,9 +102,8 @@ export function Signup() {
                       Nome completo
                     </FieldLabel>
                     <div
-                      className={`flex items-center gap-3 border border-gray-300 rounded-md py-[14px] px-3 ${
-                        errors.name ? "border-red-500" : ""
-                      }`}
+                      className={`flex items-center gap-3 border border-gray-300 rounded-md py-[14px] px-3 ${errors.name ? "border-red-500" : ""
+                        }`}
                     >
                       <UserRound size={16} className="text-gray-400" />
                       <Input
@@ -116,9 +133,8 @@ export function Signup() {
                       Email
                     </FieldLabel>
                     <div
-                      className={`flex items-center gap-3 border border-gray-300 rounded-md py-[14px] px-3 ${
-                        errors.email ? "border-red-500" : ""
-                      }`}
+                      className={`flex items-center gap-3 border border-gray-300 rounded-md py-[14px] px-3 ${errors.email ? "border-red-500" : ""
+                        }`}
                     >
                       <Mail size={16} className="text-gray-400" />
                       <Input
@@ -148,9 +164,8 @@ export function Signup() {
                       Senha
                     </FieldLabel>
                     <div
-                      className={`flex items-center gap-3 border border-gray-300 rounded-md py-[14px] px-3 ${
-                        errors.password ? "border-red-500" : ""
-                      }`}
+                      className={`flex items-center gap-3 border border-gray-300 rounded-md py-[14px] px-3 ${errors.password ? "border-red-500" : ""
+                        }`}
                     >
                       <Lock size={16} className="text-gray-400" />
                       <Input
@@ -185,10 +200,9 @@ export function Signup() {
             <Button
               className={`
                 bg-brand-base text-white rounded-md p-3
-                ${
-                  isSubmitting
-                    ? "opacity-50 cursor-not-allowed"
-                    : "hover:bg-brand-dark"
+                ${isSubmitting
+                  ? "opacity-50 cursor-not-allowed"
+                  : "hover:bg-brand-dark"
                 }
                 `}
               disabled={isSubmitting}

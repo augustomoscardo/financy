@@ -16,6 +16,8 @@ import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
 import { Link } from "react-router-dom";
 import { Separator } from "@/components/ui/separator";
+import { useAuthStore } from "@/stores/auth";
+import { toast } from "sonner";
 
 const loginFormSchema = z.object({
   email: z.string().min(1, "O email é obrigatório").email("Email inválido"),
@@ -25,6 +27,8 @@ const loginFormSchema = z.object({
 type LoginFormData = z.infer<typeof loginFormSchema>;
 
 export function Login() {
+  const login = useAuthStore((state) => state.login)
+
   const form = useForm<LoginFormData>({
     resolver: zodResolver(loginFormSchema),
     defaultValues: {
@@ -36,9 +40,19 @@ export function Login() {
   const { errors, isSubmitting } = form.formState;
 
   async function handleLogin(data: LoginFormData) {
-    console.log(data);
+    try {
+      const loginMutate = await login({
+        email: data.email,
+        password: data.password,
+      })
 
-    await new Promise((resolve) => setTimeout(resolve, 2000));
+      if (loginMutate) {
+        toast.success("Logged in successfully!")
+      }
+    } catch (error: unknown) {
+      toast.error("Failed to log in. Please check your credentials and try again.")
+      console.log(error);
+    }
   }
 
   return (
@@ -69,9 +83,8 @@ export function Login() {
                       Email
                     </FieldLabel>
                     <div
-                      className={`flex items-center gap-3 border border-gray-300 rounded-md py-[14px] px-3 ${
-                        errors.email ? "border-red-500" : ""
-                      }`}
+                      className={`flex items-center gap-3 border border-gray-300 rounded-md py-[14px] px-3 ${errors.email ? "border-red-500" : ""
+                        }`}
                     >
                       <Mail size={16} className="text-gray-400" />
                       <Input
@@ -101,9 +114,8 @@ export function Login() {
                       Password
                     </FieldLabel>
                     <div
-                      className={`flex items-center gap-3 border border-gray-300 rounded-md py-[14px] px-3 ${
-                        errors.password ? "border-red-500" : ""
-                      }`}
+                      className={`flex items-center gap-3 border border-gray-300 rounded-md py-[14px] px-3 ${errors.password ? "border-red-500" : ""
+                        }`}
                     >
                       <Lock size={16} className="text-gray-400" />
                       <Input
@@ -156,10 +168,9 @@ export function Login() {
             <Button
               className={`
                 bg-brand-base text-white rounded-md p-3
-                ${
-                  isSubmitting
-                    ? "opacity-50 cursor-not-allowed"
-                    : "hover:bg-brand-dark"
+                ${isSubmitting
+                  ? "opacity-50 cursor-not-allowed"
+                  : "hover:bg-brand-dark"
                 }
                 `}
               disabled={isSubmitting}
