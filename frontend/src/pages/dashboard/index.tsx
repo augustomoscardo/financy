@@ -116,7 +116,7 @@ export function Dashboard() {
               </Button>
             </CardFooter>
           </Card>
-          <Card className="flex flex-col">
+          <Card className="flex flex-col min-w-96">
             <CardHeader className="flex flex-row items-center justify-between py-5 px-6">
               <h4 className="text-xs tracking-wide text-gray-500 uppercase font-medium">Categorias</h4>
               <Link to="/categories" className="text-sm leading-5 font-medium text-brand-base flex items-center gap-1 hover:underline hover:text-brand-dark">
@@ -125,9 +125,25 @@ export function Dashboard() {
               </Link>
             </CardHeader>
             <Separator />
-            <CardContent className="p-6">
-              <div className="flex items-center gap-1">
-                <Badge className="bg-blue-light text-blue-dark text-sm leading-5 font-medium rounded-full px-3 py-1 shadow-none">Alimentação</Badge>
+            <CardContent className="p-6 flex flex-col gap-5">
+              <div className="flex items-center justify-between gap-1">
+                <Badge className="bg-blue-light text-blue-dark text-sm leading-5 font-medium rounded-full px-3 py-1 shadow-none">
+                  Alimentação
+                </Badge>
+                <span className="text-sm text-gray-600 leading-5">12 itens</span>
+                <p className="text-sm text-gray-800 font-semibold leading-5">R$ 542,30</p>
+              </div>
+              <div className="flex items-center justify-between ">
+                <Badge className="bg-blue-light text-blue-dark text-sm leading-5 font-medium rounded-full px-3 py-1 shadow-none">
+                  Alimentação
+                </Badge>
+                <span className="text-sm text-gray-600 leading-5">12 itens</span>
+                <p className="text-sm text-gray-800 font-semibold leading-5">R$ 542,30</p>
+              </div>
+              <div className="flex items-center justify-between ">
+                <Badge className="bg-blue-light text-blue-dark text-sm leading-5 font-medium rounded-full px-3 py-1 shadow-none">
+                  Alimentação
+                </Badge>
                 <span className="text-sm text-gray-600 leading-5">12 itens</span>
                 <p className="text-sm text-gray-800 font-semibold leading-5">R$ 542,30</p>
               </div>
