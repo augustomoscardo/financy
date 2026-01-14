@@ -1,8 +1,9 @@
 import { Page } from "@/components/page";
 import { Badge } from "@/components/ui/badge";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
+import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
-import { BriefcaseBusiness, ChevronRight, CircleArrowDown, CircleArrowUp, Wallet } from "lucide-react";
+import { BriefcaseBusiness, ChevronRight, CircleArrowDown, CircleArrowUp, Plus, Wallet } from "lucide-react";
 import { Link } from "react-router-dom";
 
 export function Dashboard() {
@@ -55,26 +56,83 @@ export function Dashboard() {
               </Link>
             </CardHeader>
             <Separator />
-            <CardContent>
-              <div className="px-6 py-4 flex items-center">
+            <CardContent className="p-0">
+              <div className="px-6 py-4 flex items-center gap-12">
                 <div className="flex-1 flex items-center gap-4">
                   <Badge className="bg-green-light p-3 rounded-lg">
                     <BriefcaseBusiness size={16} className="text-green-base" />
                   </Badge>
                   <div className="flex flex-col gap-1">
                     <p className="text-gray-800 font-medium leading-6">Pagamento Salário</p>
-                    <span className="text-gray-600 leading-5 text-sm">01/12/2025</span>
+                    <span className="text-gray-600 leading-5 text-sm">01/12/25</span>
                   </div>
                 </div>
-                <Badge>Receita</Badge>
-                <div>
-                  <p></p>
-                  <CircleArrowUp />
+                <Badge className="bg-green-light text-green-dark text-sm leading-5 font-medium rounded-full px-3 py-1 shadow-none">Receita</Badge>
+                <div className="flex items-center gap-2">
+                  <p className="text-sm text-gray-800 font-semibold leading-5">+ R$ 4250,00</p>
+                  <CircleArrowUp className="text-brand-base" />
+                </div>
+              </div>
+              <Separator />
+              <div className="px-6 py-4 flex items-center gap-12">
+                <div className="flex-1 flex items-center gap-4">
+                  <Badge className="bg-green-light p-3 rounded-lg">
+                    <BriefcaseBusiness size={16} className="text-green-base" />
+                  </Badge>
+                  <div className="flex flex-col gap-1">
+                    <p className="text-gray-800 font-medium leading-6">Pagamento Salário</p>
+                    <span className="text-gray-600 leading-5 text-sm">01/12/25</span>
+                  </div>
+                </div>
+                <Badge className="bg-green-light text-green-dark text-sm leading-5 font-medium rounded-full px-3 py-1 shadow-none">Receita</Badge>
+                <div className="flex items-center gap-2">
+                  <p className="text-sm text-gray-800 font-semibold leading-5">+ R$ 4250,00</p>
+                  <CircleArrowUp className="text-brand-base" />
+                </div>
+              </div>
+              <Separator />
+              <div className="px-6 py-4 flex items-center gap-12">
+                <div className="flex-1 flex items-center gap-4">
+                  <Badge className="bg-green-light p-3 rounded-lg">
+                    <BriefcaseBusiness size={16} className="text-green-base" />
+                  </Badge>
+                  <div className="flex flex-col gap-1">
+                    <p className="text-gray-800 font-medium leading-6">Pagamento Salário</p>
+                    <span className="text-gray-600 leading-5 text-sm">01/12/25</span>
+                  </div>
+                </div>
+                <Badge className="bg-green-light text-green-dark text-sm leading-5 font-medium rounded-full px-3 py-1 shadow-none">Receita</Badge>
+                <div className="flex items-center gap-2">
+                  <p className="text-sm text-gray-800 font-semibold leading-5">+ R$ 4250,00</p>
+                  <CircleArrowUp className="text-brand-base" />
                 </div>
               </div>
             </CardContent>
+            <Separator />
+            <CardFooter className="flex items-center justify-center py-5 px-6">
+              <Button variant="link" className="text-brand-base text-sm leading-5 font-medium hover:text-brand-dark hover:underline">
+                <Plus size={20} />
+                Nova transação
+              </Button>
+            </CardFooter>
           </Card>
-          <Card className="flex-1 flex flex-col"></Card>
+          <Card className="flex flex-col">
+            <CardHeader className="flex flex-row items-center justify-between py-5 px-6">
+              <h4 className="text-xs tracking-wide text-gray-500 uppercase font-medium">Categorias</h4>
+              <Link to="/categories" className="text-sm leading-5 font-medium text-brand-base flex items-center gap-1 hover:underline hover:text-brand-dark">
+                Gerenciar
+                <ChevronRight size={20} />
+              </Link>
+            </CardHeader>
+            <Separator />
+            <CardContent className="p-6">
+              <div className="flex items-center gap-1">
+                <Badge className="bg-blue-light text-blue-dark text-sm leading-5 font-medium rounded-full px-3 py-1 shadow-none">Alimentação</Badge>
+                <span className="text-sm text-gray-600 leading-5">12 itens</span>
+                <p className="text-sm text-gray-800 font-semibold leading-5">R$ 542,30</p>
+              </div>
+            </CardContent>
+          </Card>
         </div>
       </div>
     </Page>
