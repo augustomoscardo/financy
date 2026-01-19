@@ -5,6 +5,8 @@ import { Routes, Route, Outlet, Navigate } from "react-router-dom";
 import { Signup } from "./pages/auth/signup";
 import { useAuthStore } from "./stores/auth";
 import { Dashboard } from "./pages/dashboard";
+import { Transactions } from "./pages/transactions";
+import { Categories } from "./pages/categories";
 
 export function PrivateRoute() {
   const isAuthenticated = useAuthStore((state) => state.isAuthenticated);
@@ -29,6 +31,8 @@ export default function App() {
 
         <Route element={<PrivateRoute />}>
           <Route path="/" element={<Dashboard />} />
+          <Route path="/transactions" element={<Transactions />} />
+          <Route path="/categories" element={<Categories />} />
         </Route>
       </Routes>
     </Layout>
