@@ -25,7 +25,7 @@ export function Header() {
             <LinkPage name="Categorias" destination="/categories" />
           </nav>
           <Avatar>
-            <AvatarFallback className="bg-zinc-950 text-primary-foreground">
+            <AvatarFallback className="bg-gray-300 text-gray-800">
               {user?.name?.charAt(0)}
             </AvatarFallback>
           </Avatar>
