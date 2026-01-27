@@ -1,15 +1,22 @@
 import { create } from "zustand";
 import { persist } from "zustand/middleware";
 
-import { LoginInput, RegisterInput, User } from "@/types";
+import { LoginInput, RegisterInput, User, type UpdateProfileInput } from "@/types";
 import { apolloClient } from "@/lib/apollo";
 import { REGISTER } from "@/lib/graphql/mutations/register";
 import { LOGIN } from "@/lib/graphql/mutations/login";
+import { UPDATE_PROFILE } from "@/lib/graphql/mutations/update-profile";
 
 type RegisterMutationData = {
   register: {
     token: string;
     refreshToken: string;
+    user: User;
+  };
+};
+
+type UpdateProfileMutationData = {
+  updateProfile: {
     user: User;
   };
 };
@@ -29,6 +36,7 @@ interface AuthState {
   signup: (data: RegisterInput) => Promise<boolean>;
   login: (data: LoginInput) => Promise<boolean>;
   logout: () => void;
+  updateProfile: (data: UpdateProfileInput) => Promise<boolean>;
 }
 
 export const useAuthStore = create<AuthState>()(
@@ -126,6 +134,34 @@ export const useAuthStore = create<AuthState>()(
 
         apolloClient.clearStore();
       },
+      updateProfile: async (updateProfileData: UpdateProfileInput) => {
+        try {
+          const { data } = await apolloClient.mutate<
+            UpdateProfileMutationData,
+            { data: UpdateProfileInput }
+          >({
+            mutation: UPDATE_PROFILE,
+            variables: {
+              data: {
+                name: updateProfileData.name
+              }
+            }
+          })
+
+          if (data?.updateProfile) {
+            const { user } = data.updateProfile
+
+            console.log(user);
+
+            return true
+          }
+
+          return false
+        } catch (error) {
+          console.log("Error during profile update:", error);
+          throw error;
+        }
+      }
     }),
     {
       name: "financy-auth-storage",

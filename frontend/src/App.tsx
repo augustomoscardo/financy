@@ -7,6 +7,7 @@ import { useAuthStore } from "./stores/auth";
 import { Dashboard } from "./pages/dashboard";
 import { Transactions } from "./pages/transactions";
 import { Categories } from "./pages/categories";
+import { Profile } from "./pages/profile";
 
 export function PrivateRoute() {
   const isAuthenticated = useAuthStore((state) => state.isAuthenticated);
@@ -33,6 +34,7 @@ export default function App() {
           <Route path="/" element={<Dashboard />} />
           <Route path="/transactions" element={<Transactions />} />
           <Route path="/categories" element={<Categories />} />
+          <Route path="/profile" element={<Profile />} />
         </Route>
       </Routes>
     </Layout>

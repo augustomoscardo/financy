@@ -15,7 +15,7 @@ export function LinkPage({ name, destination }: LinkPageProps) {
       <Button
         size="default"
         variant={isActive ? "default" : "ghost"}
-        className={`p-0 bg-transparent outline-none border-none shadow-none hover:bg-transparent hover:underline hover:text-brand-base ${isActive ? "cursor-default text-brand-base font-semibold" : " cursor-pointer"}`}
+        className={`p-0 bg-transparent outline-none border-none shadow-none text-gray-600 text-sm hover:bg-transparent hover:underline hover:text-brand-base ${isActive ? "cursor-default text-brand-base font-semibold" : " cursor-pointer"}`}
       >
         {name}
       </Button>
