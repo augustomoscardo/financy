@@ -7,6 +7,9 @@ export class CategoryInput {
   name!: string;
 
   @Field(() => String, { nullable: true })
+  description?: string;
+
+  @Field(() => String, { nullable: true })
   color?: string;
 
   @Field(() => String, { nullable: true })
