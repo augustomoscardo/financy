@@ -5,6 +5,7 @@
 
 input CategoryInput {
   color: String
+  description: String
   icon: String
   name: String!
 }
@@ -12,6 +13,7 @@ input CategoryInput {
 type CategoryModel {
   color: String
   createdAt: DateTimeISO!
+  description: String
   icon: String
   id: ID!
   name: String!
