@@ -12,6 +12,7 @@ input CategoryInput {
 
 type CategoryModel {
   color: String
+  countTransactions: Float!
   createdAt: DateTimeISO!
   description: String
   icon: String
