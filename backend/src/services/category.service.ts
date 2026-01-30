@@ -61,6 +61,7 @@ export class CategoryService {
       },
       data: {
         name: data.name,
+        description: data.description,
         color: data.color,
         icon: data.icon,
       }
