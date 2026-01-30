@@ -10,6 +10,8 @@ export const GET_CATEGORIES = gql`
       color
       createdAt
       updatedAt
+      userId
+      countTransactions
     }
   }
 `;
