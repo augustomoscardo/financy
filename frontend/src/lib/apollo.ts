@@ -9,6 +9,7 @@ import {
 } from "@apollo/client";
 import { ErrorLink } from "@apollo/client/link/error";
 import { SetContextLink } from "@apollo/client/link/context";
+import { toast } from "sonner";
 
 const httpLink = new HttpLink({
   uri: `${import.meta.env.VITE_BACKEND_URL}/graphql`,
@@ -31,6 +32,7 @@ const errorLink = new ErrorLink(({ error }) => {
       console.error(`[GraphQL error]: Message: ${message}, Location: ${locations}, Path: ${path}`);
       if (message === "Usuário não autenticado.") {
         const { logout } = useAuthStore.getState();
+        toast.warning("Sua sessão expirou. Faça login novamente.");
         logout();
       }
     })
