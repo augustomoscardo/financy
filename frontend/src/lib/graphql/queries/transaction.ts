@@ -5,7 +5,6 @@ export const GET_TRANSACTIONS = gql`
     getTransactions {
       id
       title
-      description
       amount
       type
       date

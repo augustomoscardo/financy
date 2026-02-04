@@ -14,12 +14,11 @@ import { DynamicIcon } from "lucide-react/dynamic";
 import { UPDATE_CATEGORY } from "@/lib/graphql/mutations/category";
 import { useMutation } from "@apollo/client/react";
 import { toast } from "sonner";
+import type { DialogProps } from "@/hooks/use-dialog";
 
-interface UpdateCategoryModalProps {
-  isOpen: boolean;
-  onOpenChange: (open: boolean) => void;
+type UpdateCategoryModalProps = {
   category: Category;
-}
+} & DialogProps
 
 const updateCategorySchema = z.object({
   name: z.string().min(1, "Nome é obrigatório"),

@@ -16,9 +16,7 @@ import { CREATE_CATEGORY } from '@/lib/graphql/mutations/category'
 import { toast } from 'sonner'
 import { GET_CATEGORIES } from '@/lib/graphql/queries/category'
 
-type ModalCategoryProps = {
-  category?: null
-} & DialogProps
+type ModalCategoryProps = DialogProps
 
 const categoryFormSchema = z.object({
   name: z.string().min(1, "O título é obrigatório").min(3, "O título deve ter no mínimo 3 caracteres"),
@@ -40,12 +38,10 @@ export function ModalNewCategory(props: ModalCategoryProps) {
     }
   })
 
-  const { handleSubmit, reset } = form
-
   const [createCategory, { loading }] = useMutation(CREATE_CATEGORY, {
     onCompleted: () => {
       toast.success('Categoria criada com sucesso!')
-      reset()
+      form.reset()
       props.onOpenChange(false)
     },
   })
@@ -87,7 +83,7 @@ export function ModalNewCategory(props: ModalCategoryProps) {
           </Button>
         </DialogHeader>
 
-        <form onSubmit={handleSubmit(handleCreateCategory)} className='flex flex-col gap-6'>
+        <form onSubmit={form.handleSubmit(handleCreateCategory)} className='flex flex-col gap-6'>
           <Controller
             name='name'
             control={form.control}
