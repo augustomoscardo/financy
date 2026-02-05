@@ -12,20 +12,29 @@ import { useDialog } from "@/hooks/use-dialog";
 import { ModalNewTransaction } from "@/components/new-transaction-modal";
 import { useQuery } from "@apollo/client/react";
 import { GET_TRANSACTIONS } from "@/lib/graphql/queries/transaction";
-import type { Transaction } from "@/types";
+import type { Category, Transaction } from "@/types";
 import { DynamicIcon } from "lucide-react/dynamic";
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import { DeleteTransactionModal } from "@/components/delete-transaction-modal";
 import { UpdateTransactionModal } from "@/components/update-transaction-modal";
 import { format } from "date-fns";
+import { ptBR } from "date-fns/locale";
+import { normalizeStringRemovingAccents } from "@/utils/normalize-string-removing-accent";
 
 export function Transactions() {
-  const form = useForm()
-  const { errors } = form.formState;
+  const form = useForm({
+    defaultValues: {
+      title: "",
+      type: "all",
+      category: "all",
+      period: "all",
+    },
+  })
+
+  const filters = form.watch();
 
   const { data, loading } = useQuery<{ getTransactions: Transaction[] }>(GET_TRANSACTIONS)
   const transactions = data?.getTransactions || []
-
 
   const newTransactionDialog = useDialog();
   const updateTransactionDialog = useDialog();
@@ -42,6 +51,37 @@ export function Transactions() {
     setSelectedTransaction(transaction)
     updateTransactionDialog.onOpenChange(true)
   }
+
+  const [transactionsCategories, transactionsPeriods] = useMemo(() => {
+    const periods: string[] = []
+    const categories: Category[] = []
+
+    for (const transaction of transactions) {
+      const transactionPeriod = format(new Date(transaction.date), "MMMM_yyyy").toLowerCase()
+      const transactionCategoryId = transaction.category.id
+
+      if (!periods.includes(transactionPeriod)) {
+        periods.push(transactionPeriod)
+      }
+
+      if (!categories.find((category) => category.id === transactionCategoryId)) {
+        categories.push(transaction.category)
+      }
+    }
+
+    return [categories, periods]
+  }, [transactions])
+
+
+  const filteredTransactions = transactions.filter((transaction) => {
+    const matchesTitle = normalizeStringRemovingAccents(transaction.title.toLowerCase()).includes(normalizeStringRemovingAccents(filters.title.toLowerCase()));
+
+    const matchesType = filters.type === 'all' || transaction.type === filters.type;
+    const matchesCategory = filters.category === 'all' || transaction.category.id === filters.category;
+    const matchesPeriod = filters.period === 'all' || format(new Date(transaction.date), "MMMM_yyyy").toLowerCase() === filters.period
+
+    return matchesTitle && matchesType && matchesCategory && matchesPeriod;
+  })
 
   return (
     <Page className="flex flex-col gap-8">
@@ -69,8 +109,7 @@ export function Transactions() {
                   Buscar
                 </FieldLabel>
                 <div
-                  className={`flex items-center gap-3 border border-gray-300 rounded-md px-3 py-[14px] h-12 ${errors.title ? "border-red-500" : ""
-                    }`}
+                  className={`flex items-center gap-3 border border-gray-300 rounded-md px-3 py-[14px] h-12 `}
                 >
                   <Search size={16} className="text-gray-400" />
                   <Input
@@ -93,7 +132,7 @@ export function Transactions() {
                 <FieldLabel htmlFor={field.name} className="text-gray-700">
                   Tipo
                 </FieldLabel>
-                <Select defaultValue="all" value={field.value}>
+                <Select value={field.value} onValueChange={field.onChange}>
                   <SelectTrigger className="h-12 px-3 py-[14px]">
                     <SelectValue placeholder="Selecione um tipo" />
                   </SelectTrigger>
@@ -101,7 +140,7 @@ export function Transactions() {
                     <SelectGroup>
                       <SelectItem value="all">Todos</SelectItem>
                       <SelectItem value="income">Entradas</SelectItem>
-                      <SelectItem value="expense">Saídas</SelectItem>
+                      <SelectItem value="outcome">Saídas</SelectItem>
                     </SelectGroup>
                   </SelectContent>
                 </Select>
@@ -118,16 +157,18 @@ export function Transactions() {
                 <FieldLabel htmlFor={field.name} className="text-gray-700">
                   Categoria
                 </FieldLabel>
-                <Select defaultValue="all">
+                <Select value={field.value} onValueChange={field.onChange} disabled={loading}>
                   <SelectTrigger className="h-12 px-3 py-[14px]">
                     <SelectValue placeholder="Selecione uma categoria" />
                   </SelectTrigger>
                   <SelectContent>
                     <SelectGroup>
-                      <SelectItem value="all" defaultChecked>Todas</SelectItem>
-                      <SelectItem value="food">Alimentação</SelectItem>
-                      <SelectItem value="salary">Salário</SelectItem>
-                      <SelectItem value="market">Mercado</SelectItem>
+                      <SelectItem value="all">Todas</SelectItem>
+                      {transactionsCategories.map((category) => (
+                        <SelectItem key={category.id} value={category.id}>
+                          {category.name}
+                        </SelectItem>
+                      ))}
                     </SelectGroup>
                   </SelectContent>
                 </Select>
@@ -144,16 +185,18 @@ export function Transactions() {
                 <FieldLabel htmlFor={field.name} className="text-gray-700">
                   Período
                 </FieldLabel>
-                <Select defaultValue="all" value={field.value} onValueChange={field.onChange}>
+                <Select value={field.value} onValueChange={field.onChange}>
                   <SelectTrigger className="h-12 px-3 py-[14px]">
                     <SelectValue placeholder="Selecione um período" />
                   </SelectTrigger>
                   <SelectContent>
                     <SelectGroup>
-                      <SelectItem value="all" defaultChecked>Todas</SelectItem>
-                      <SelectItem value="november_2025">Novembro / 2025</SelectItem>
-                      <SelectItem value="december_2025">Dezembro / 2025</SelectItem>
-                      <SelectItem value="january_2026">Janeiro / 2026</SelectItem>
+                      <SelectItem value="all">Todas</SelectItem>
+                      {transactionsPeriods.map((period) => (
+                        <SelectItem key={period} value={period}>
+                          {format(new Date(period), "MMMM / yyyy", { locale: ptBR })}
+                        </SelectItem>
+                      ))}
                     </SelectGroup>
                   </SelectContent>
                 </Select>
@@ -176,7 +219,7 @@ export function Transactions() {
             </TableRow>
           </TableHeader>
           <TableBody>
-            {transactions.length > 0 && !loading && transactions.map((transaction) => (
+            {filteredTransactions.length > 0 && !loading && filteredTransactions.map((transaction) => (
               <TableRow key={transaction.id}>
                 <TableCell className="py-5 px-6">
                   <div className="flex items-center gap-4">
@@ -186,7 +229,7 @@ export function Transactions() {
                     <span className="text-base text-gray-800 font-medium">{transaction.title}</span>
                   </div>
                 </TableCell>
-                <TableCell className="py-5 px-6 text-sm">{format(transaction.createdAt as string, "dd/MM/yyyy")}</TableCell>
+                <TableCell className="py-5 px-6 text-sm">{format(transaction.date as string, "dd/MM/yyyy")}</TableCell>
                 <TableCell className="py-5 px-6 text-center">
                   <Badge className={`py-1 px-3 bg-${transaction.category.color}-light text-${transaction.category.color}-dark rounded-full hover:bg-transparent`}>{transaction.category.name}</Badge>
                 </TableCell>

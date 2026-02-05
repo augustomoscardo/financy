@@ -11,12 +11,13 @@ import { GET_TRANSACTIONS } from "@/lib/graphql/queries/transaction";
 import type { Category, Transaction } from "@/types";
 import { useQuery } from "@apollo/client/react";
 import { format } from "date-fns";
-import { BriefcaseBusiness, ChevronRight, CircleArrowDown, CircleArrowUp, Plus, Wallet } from "lucide-react";
+import { ChevronRight, CircleArrowDown, CircleArrowUp, Plus, Wallet } from "lucide-react";
+import { DynamicIcon } from "lucide-react/dynamic";
 import { Link } from "react-router-dom";
 
 export function Dashboard() {
   const { data: transactionsData, loading: transactionsLoading } = useQuery<{ getTransactions: Transaction[] }>(GET_TRANSACTIONS)
-  const transactions = transactionsData?.getTransactions || []
+  const transactions = transactionsData?.getTransactions ? [...transactionsData.getTransactions].sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime()) : []
 
   const { data: categoriesData, loading: categoriesLoading } = useQuery<{ getCategories: Category[] }>(GET_CATEGORIES)
   const categories = categoriesData?.getCategories || []
@@ -136,16 +137,16 @@ export function Dashboard() {
                     <div key={transaction.id}>
                       <div className="flex items-center gap-12 py-4">
                         <div className="flex-1 flex items-center gap-4 px-6 ">
-                          <Badge className="bg-green-light p-3 rounded-lg">
-                            <BriefcaseBusiness size={16} className="text-green-base" />
+                          <Badge className={` bg-${transaction.category.color}-light p-3 rounded-lg`}>
+                            <DynamicIcon name={transaction.category.icon as React.ComponentProps<typeof DynamicIcon>["name"]} size={16} className={`text-${transaction.category.color}-base`} />
                           </Badge>
                           <div className="flex flex-col gap-1">
                             <p className="text-gray-800 font-medium leading-6">{transaction.title}</p>
                             <span className="text-gray-600 leading-5 text-sm">{format(new Date(transaction.date), "dd/MM/yyyy")}</span>
                           </div>
                         </div>
-                        <Badge className="bg-green-light text-green-dark text-sm leading-5 font-medium rounded-full px-3 py-1 shadow-none">
-                          {transaction.type === 'income' ? 'Receita' : 'Despesa'}
+                        <Badge className={`bg-${transaction.category.color}-light text-${transaction.category.color}-dark text-sm leading-5 font-medium rounded-full px-3 py-1 shadow-none`}>
+                          {transaction.category.name}
                         </Badge>
                         <div className="flex items-center gap-2 px-6">
                           <p className="text-sm text-gray-800 font-semibold leading-5">
