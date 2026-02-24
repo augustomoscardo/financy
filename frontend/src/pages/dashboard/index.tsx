@@ -8,6 +8,7 @@ import { Skeleton } from "@/components/ui/skeleton";
 import { useDialog } from "@/hooks/use-dialog";
 import { GET_CATEGORIES } from "@/lib/graphql/queries/category";
 import { GET_TRANSACTIONS } from "@/lib/graphql/queries/transaction";
+import { getCategoryColor } from "@/lib/category-utils";
 import type { Category, Transaction } from "@/types";
 import { useQuery } from "@apollo/client/react";
 import { format } from "date-fns";
@@ -16,10 +17,10 @@ import { DynamicIcon } from "lucide-react/dynamic";
 import { Link } from "react-router-dom";
 
 export function Dashboard() {
-  const { data: transactionsData, loading: transactionsLoading } = useQuery<{ getTransactions: Transaction[] }>(GET_TRANSACTIONS)
+  const { data: transactionsData, loading: transactionsLoading, refetch: refetchTransactions } = useQuery<{ getTransactions: Transaction[] }>(GET_TRANSACTIONS)
   const transactions = transactionsData?.getTransactions ? [...transactionsData.getTransactions].sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime()) : []
 
-  const { data: categoriesData, loading: categoriesLoading } = useQuery<{ getCategories: Category[] }>(GET_CATEGORIES)
+  const { data: categoriesData, loading: categoriesLoading, refetch: refetchCategories } = useQuery<{ getCategories: Category[] }>(GET_CATEGORIES)
   const categories = categoriesData?.getCategories || []
 
   const newTransactionDialog = useDialog();
@@ -133,39 +134,43 @@ export function Dashboard() {
 
               {!transactionsLoading && transactions.length > 0 && (
                 <>
-                  {transactions.map((transaction) => (
-                    <div key={transaction.id}>
-                      <div className="flex items-center gap-12 py-4">
-                        <div className="flex-1 flex items-center gap-4 px-6 ">
-                          <Badge className={` bg-${transaction.category.color}-light p-3 rounded-lg`}>
-                            <DynamicIcon name={transaction.category.icon as React.ComponentProps<typeof DynamicIcon>["name"]} size={16} className={`text-${transaction.category.color}-base`} />
+                  {transactions.map((transaction) => {
+                    const categoryColor = getCategoryColor(transaction.category.color)
+
+                    return (
+                      <div key={transaction.id}>
+                        <div className="flex items-center gap-12 py-4">
+                          <div className="flex-1 flex items-center gap-4 px-6 ">
+                            <Badge className={`p-3 rounded-lg ${categoryColor.lightBgClass}`}>
+                              <DynamicIcon name={transaction.category.icon as React.ComponentProps<typeof DynamicIcon>["name"]} size={16} className={categoryColor.textClass} />
+                            </Badge>
+                            <div className="flex flex-col gap-1">
+                              <p className="text-gray-800 font-medium leading-6">{transaction.title}</p>
+                              <span className="text-gray-600 leading-5 text-sm">{format(new Date(transaction.date), "dd/MM/yyyy")}</span>
+                            </div>
+                          </div>
+                          <Badge className={`${categoryColor.lightBgClass} ${categoryColor.darkTextClass} text-sm leading-5 font-medium rounded-full px-3 py-1 shadow-none`}>
+                            {transaction.category.name}
                           </Badge>
-                          <div className="flex flex-col gap-1">
-                            <p className="text-gray-800 font-medium leading-6">{transaction.title}</p>
-                            <span className="text-gray-600 leading-5 text-sm">{format(new Date(transaction.date), "dd/MM/yyyy")}</span>
+                          <div className="flex items-center gap-2 px-6">
+                            <p className="text-sm text-gray-800 font-semibold leading-5">
+                              {transaction.type === 'income' ? '+ ' : '- '}
+                              {new Intl.NumberFormat('pt-BR', {
+                                style: 'currency',
+                                currency: 'BRL',
+                              }).format(transaction.amount)}
+                            </p>
+                            {transaction.type === 'income' ? (
+                              <CircleArrowUp className="text-brand-base" />
+                            ) : (
+                              <CircleArrowDown className="text-red-base" />
+                            )}
                           </div>
                         </div>
-                        <Badge className={`bg-${transaction.category.color}-light text-${transaction.category.color}-dark text-sm leading-5 font-medium rounded-full px-3 py-1 shadow-none`}>
-                          {transaction.category.name}
-                        </Badge>
-                        <div className="flex items-center gap-2 px-6">
-                          <p className="text-sm text-gray-800 font-semibold leading-5">
-                            {transaction.type === 'income' ? '+ ' : '- '}
-                            {new Intl.NumberFormat('pt-BR', {
-                              style: 'currency',
-                              currency: 'BRL',
-                            }).format(transaction.amount)}
-                          </p>
-                          {transaction.type === 'income' ? (
-                            <CircleArrowUp className="text-brand-base" />
-                          ) : (
-                            <CircleArrowDown className="text-red-base" />
-                          )}
-                        </div>
+                        <Separator />
                       </div>
-                      <Separator />
-                    </div>
-                  ))}
+                    )
+                  })}
                 </>
               )}
 
@@ -210,19 +215,23 @@ export function Dashboard() {
               )}
 
               {!categoriesLoading && categories.length > 0 && (
-                categories.map((category) => (
-                  <div key={category.id} className="flex items-center gap-1">
-                    <Badge className={`bg-${category.color}-light text-${category.color}-dark hover:bg-${category.color}-light text-sm leading-5 font-medium rounded-full px-3 py-1 shadow-none`}>
-                      {category.name}
-                    </Badge>
-                    <span className="flex-1 text-end text-sm text-gray-600 leading-5">{category.countTransactions} itens</span>
-                    {/* <p className="ml-4 text-sm text-gray-800 font-semibold leading-5">{new Intl.NumberFormat('pt-BR', {
+                categories.map((category) => {
+                  const categoryColor = getCategoryColor(category.color)
+
+                  return (
+                    <div key={category.id} className="flex items-center gap-1">
+                      <Badge className={`${categoryColor.lightBgClass} ${categoryColor.darkTextClass} text-sm leading-5 font-medium rounded-full px-3 py-1 shadow-none`}>
+                        {category.name}
+                      </Badge>
+                      <span className="flex-1 text-end text-sm text-gray-600 leading-5">{category.countTransactions} itens</span>
+                      {/* <p className="ml-4 text-sm text-gray-800 font-semibold leading-5">{new Intl.NumberFormat('pt-BR', {
                       style: 'currency',
                       currency: 'BRL',
                     }).format(category.totalAmount)}
                     </p> */}
-                  </div>
-                ))
+                    </div>
+                  )
+                })
               )}
 
               {!categoriesLoading && !categories.length && (
@@ -238,6 +247,7 @@ export function Dashboard() {
       {newTransactionDialog.isOpen && (
         <ModalNewTransaction
           {...newTransactionDialog}
+          onTransactionCreated={() => Promise.all([refetchTransactions(), refetchCategories()])}
         />
       )}
     </Page>

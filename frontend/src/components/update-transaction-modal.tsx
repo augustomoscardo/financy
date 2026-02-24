@@ -168,7 +168,7 @@ export function UpdateTransactionModal({ transaction, isOpen, onOpenChange }: Up
             control={form.control}
             render={({ field, fieldState }) => (
               <Field data-invalid={fieldState.invalid} className={`flex flex-col gap-2`} >
-                <FieldLabel htmlFor={field.name} className='active:bg-red-500'>Descrição</FieldLabel>
+                <FieldLabel htmlFor={field.name}>Descrição</FieldLabel>
                 <Input
                   {...field}
                   id={field.name}
@@ -246,7 +246,7 @@ export function UpdateTransactionModal({ transaction, isOpen, onOpenChange }: Up
             control={form.control}
             render={({ field, fieldState }) => (
               <Field data-invalid={fieldState.invalid} className={`flex flex-col gap-2`} >
-                <FieldLabel htmlFor={field.name} className='active:bg-red-500'>Categoria</FieldLabel>
+                <FieldLabel htmlFor={field.name}>Categoria</FieldLabel>
                 <Select
                   name={field.name}
                   value={field.value}

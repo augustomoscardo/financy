@@ -7,6 +7,7 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Skeleton } from "@/components/ui/skeleton";
 import { useDialog } from "@/hooks/use-dialog";
+import { getCategoryColor } from "@/lib/category-utils";
 import { DELETE_CATEGORY } from "@/lib/graphql/mutations/category";
 import { GET_CATEGORIES } from "@/lib/graphql/queries/category";
 import type { Category } from "@/types";
@@ -102,7 +103,11 @@ export function Categories() {
             <CardTitle className="flex items-center gap-4">
               {mostUsedCategory?.countTransactions ? (
                 <>
-                  <DynamicIcon name={mostUsedCategory.icon as React.ComponentProps<typeof DynamicIcon>["name"]} size={24} className={`text-${mostUsedCategory.color}-base`} />
+                  <DynamicIcon
+                    name={mostUsedCategory.icon as React.ComponentProps<typeof DynamicIcon>["name"]}
+                    size={24}
+                    className={getCategoryColor(mostUsedCategory.color).textClass}
+                  />
                   <h3 className="text-gray-800 text-[38px] leading-8 font-bold">{mostUsedCategory.name}</h3>
                 </>
               ) : (
@@ -146,35 +151,43 @@ export function Categories() {
 
       {!loading && categories.length > 0 && (
         <div className="grid grid-cols-4  gap-4">
-          {categories.map((category) => (
-            <Card className="p-6" key={category.id}>
-              <CardContent className="p-0 flex flex-col gap-5">
-                <div className="flex items-center justify-between">
-                  <Badge className={`p-3 bg-${category.color}-light hover:bg-${category.color}-dark`}>
-                    <DynamicIcon name={category.icon as React.ComponentProps<typeof DynamicIcon>["name"]} size={16} className={`text-${category.color}-base`} />
-                  </Badge>
-                  <div className="flex  items-center gap-2">
-                    <Button className="text-danger bg-white border border-gray-300 rounded-lg w-8 h-8 hover:bg-gray-300" onClick={() => handleOpenDeleteCategoryDialog(category)}>
-                      <Trash size={16} />
-                    </Button>
-                    <Button className="text-gray-700 bg-white border border-gray-300 rounded-lg w-8 h-8 hover:bg-gray-300" onClick={() => handleOpenUpdateCategoryDialog(category)}>
-                      <SquarePen size={16} />
-                    </Button>
+          {categories.map((category) => {
+            const categoryColor = getCategoryColor(category.color)
+
+            return (
+              <Card className="p-6" key={category.id}>
+                <CardContent className="p-0 flex flex-col gap-5">
+                  <div className="flex items-center justify-between">
+                    <Badge className={`p-3 ${categoryColor.lightBgClass}`}>
+                      <DynamicIcon
+                        name={category.icon as React.ComponentProps<typeof DynamicIcon>["name"]}
+                        size={16}
+                        className={categoryColor.textClass}
+                      />
+                    </Badge>
+                    <div className="flex  items-center gap-2">
+                      <Button className="text-danger bg-white border border-gray-300 rounded-lg w-8 h-8 hover:bg-gray-300" onClick={() => handleOpenDeleteCategoryDialog(category)}>
+                        <Trash size={16} />
+                      </Button>
+                      <Button className="text-gray-700 bg-white border border-gray-300 rounded-lg w-8 h-8 hover:bg-gray-300" onClick={() => handleOpenUpdateCategoryDialog(category)}>
+                        <SquarePen size={16} />
+                      </Button>
+                    </div>
                   </div>
-                </div>
-                <div className="flex flex-col gap-1">
-                  <h4 className="text-gray-800 font-semibold">{category.name}</h4>
-                  <p className="text-gray-600 text-sm">{category.description}</p>
-                </div>
-                <div className="flex items-center justify-between">
-                  <Badge className={`bg-${category.color}-light text-${category.color}-base py-1 px-3 rounded-full hover:bg-${category.color}-light`}>
-                    {category.name}
-                  </Badge>
-                  <span className="text-gray-600 text-sm">{category.countTransactions} itens</span>
-                </div>
-              </CardContent>
-            </Card>
-          ))}
+                  <div className="flex flex-col gap-1">
+                    <h4 className="text-gray-800 font-semibold">{category.name}</h4>
+                    <p className="text-gray-600 text-sm">{category.description}</p>
+                  </div>
+                  <div className="flex items-center justify-between">
+                    <Badge className={`${categoryColor.lightBgClass} ${categoryColor.textClass} py-1 px-3 rounded-full`}>
+                      {category.name}
+                    </Badge>
+                    <span className="text-gray-600 text-sm">{category.countTransactions} itens</span>
+                  </div>
+                </CardContent>
+              </Card>
+            )
+          })}
         </div>
       )}
 

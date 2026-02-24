@@ -18,9 +18,10 @@ import { useMutation, useQuery } from '@apollo/client/react'
 import { toast } from 'sonner'
 import type { Category } from '@/types'
 import { GET_CATEGORIES } from '@/lib/graphql/queries/category'
-import { GET_TRANSACTIONS } from '@/lib/graphql/queries/transaction'
 
-type ModalTransactionProps = DialogProps
+type ModalTransactionProps = DialogProps & {
+  onTransactionCreated?: () => Promise<unknown> | unknown
+}
 
 const transactionFormSchema = z.object({
   type: z.enum(['income', 'outcome']),
@@ -79,11 +80,19 @@ export function ModalNewTransaction(props: ModalTransactionProps) {
             amount: data.amount,
             categoryId: data.category
           }
-        },
-        refetchQueries: [{ query: GET_TRANSACTIONS }]
+        }
       })
 
+      await props.onTransactionCreated?.()
+
       toast.success("Transação criada com sucesso!")
+      form.reset({
+        type: 'outcome',
+        title: '',
+        date: undefined,
+        amount: 0,
+        category: '',
+      })
       props.onOpenChange(false)
 
     } catch (error: unknown) {
@@ -171,7 +180,7 @@ export function ModalNewTransaction(props: ModalTransactionProps) {
             control={form.control}
             render={({ field, fieldState }) => (
               <Field data-invalid={fieldState.invalid} className={`flex flex-col gap-2`} >
-                <FieldLabel htmlFor={field.name} className='active:bg-red-500'>Descrição</FieldLabel>
+                <FieldLabel htmlFor={field.name}>Descrição</FieldLabel>
                 <Input
                   {...field}
                   id={field.name}
@@ -244,7 +253,7 @@ export function ModalNewTransaction(props: ModalTransactionProps) {
             control={form.control}
             render={({ field, fieldState }) => (
               <Field data-invalid={fieldState.invalid} className={`flex flex-col gap-2`} >
-                <FieldLabel htmlFor={field.name} className='active:bg-red-500'>Categoria</FieldLabel>
+                <FieldLabel htmlFor={field.name}>Categoria</FieldLabel>
                 <Select
                   name={field.name}
                   value={field.value}
@@ -256,7 +265,7 @@ export function ModalNewTransaction(props: ModalTransactionProps) {
                   </SelectTrigger>
                   <SelectContent>
                     {categories.map((category) => (
-                      <SelectItem value={category.id}>{category.name}</SelectItem>
+                      <SelectItem key={category.id} value={category.id}>{category.name}</SelectItem>
                     ))}
                   </SelectContent>
                 </Select>

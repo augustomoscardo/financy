@@ -89,7 +89,7 @@ export function UpdateCategoryModal(props: UpdateCategoryModalProps) {
             control={form.control}
             render={({ field, fieldState }) => (
               <Field data-invalid={fieldState.invalid} className={`flex flex-col gap-2`} >
-                <FieldLabel htmlFor={field.name} className='active:bg-red-500'>Título</FieldLabel>
+                <FieldLabel htmlFor={field.name}>Título</FieldLabel>
                 <Input
                   {...field}
                   id={field.name}
@@ -109,7 +109,7 @@ export function UpdateCategoryModal(props: UpdateCategoryModalProps) {
             control={form.control}
             render={({ field, fieldState }) => (
               <Field data-invalid={fieldState.invalid} className={`flex flex-col gap-2`} >
-                <FieldLabel htmlFor={field.name} className='active:bg-red-500'>
+                <FieldLabel htmlFor={field.name}>
                   Descrição
                   <span className="text-gray-400 font-normal ml-1">(Opcional)</span>
                 </FieldLabel>

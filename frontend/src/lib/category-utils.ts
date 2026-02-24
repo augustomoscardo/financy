@@ -19,13 +19,62 @@ export const CATEGORY_ICON_NAMES = [
 ] as const
 
 export const CATEGORY_COLORS = [
-  { name: 'green', value: 'green-base', bgClass: 'bg-green-base', textClass: 'text-green-base' },
-  { name: 'blue', value: 'blue-base', bgClass: 'bg-blue-base', textClass: 'text-blue-base' },
-  { name: 'purple', value: 'purple-base', bgClass: 'bg-purple-base', textClass: 'text-purple-base' },
-  { name: 'pink', value: 'pink-base', bgClass: 'bg-pink-base', textClass: 'text-pink-base' },
-  { name: 'red', value: 'red-base', bgClass: 'bg-red-base', textClass: 'text-red-base' },
-  { name: 'orange', value: 'orange-base', bgClass: 'bg-orange-base', textClass: 'text-orange-base' },
-  { name: 'yellow', value: 'yellow-base', bgClass: 'bg-yellow-base', textClass: 'text-yellow-base' },
+  {
+    name: 'green',
+    value: 'green-base',
+    bgClass: 'bg-green-base',
+    textClass: 'text-green-base',
+    lightBgClass: 'bg-green-light',
+    darkTextClass: 'text-green-dark',
+  },
+  {
+    name: 'blue',
+    value: 'blue-base',
+    bgClass: 'bg-blue-base',
+    textClass: 'text-blue-base',
+    lightBgClass: 'bg-blue-light',
+    darkTextClass: 'text-blue-dark',
+  },
+  {
+    name: 'purple',
+    value: 'purple-base',
+    bgClass: 'bg-purple-base',
+    textClass: 'text-purple-base',
+    lightBgClass: 'bg-purple-light',
+    darkTextClass: 'text-purple-dark',
+  },
+  {
+    name: 'pink',
+    value: 'pink-base',
+    bgClass: 'bg-pink-base',
+    textClass: 'text-pink-base',
+    lightBgClass: 'bg-pink-light',
+    darkTextClass: 'text-pink-dark',
+  },
+  {
+    name: 'red',
+    value: 'red-base',
+    bgClass: 'bg-red-base',
+    textClass: 'text-red-base',
+    lightBgClass: 'bg-red-light',
+    darkTextClass: 'text-red-dark',
+  },
+  {
+    name: 'orange',
+    value: 'orange-base',
+    bgClass: 'bg-orange-base',
+    textClass: 'text-orange-base',
+    lightBgClass: 'bg-orange-light',
+    darkTextClass: 'text-orange-dark',
+  },
+  {
+    name: 'yellow',
+    value: 'yellow-base',
+    bgClass: 'bg-yellow-base',
+    textClass: 'text-yellow-base',
+    lightBgClass: 'bg-yellow-light',
+    darkTextClass: 'text-yellow-dark',
+  },
 ] as const
 
 /**
