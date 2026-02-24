@@ -75,3 +75,25 @@ export interface UpdateTransactionInput {
   categoryId?: string;
   date?: string;
 }
+
+export interface PaginationInfo {
+  currentPage: number;
+  totalPages: number;
+  totalItems: number;
+  itemsPerPage: number;
+  hasNextPage: boolean;
+  hasPreviousPage: boolean;
+}
+
+export interface TransactionConnection {
+  transactions: Transaction[];
+  pagination: PaginationInfo;
+}
+
+export interface TransactionFilters {
+  title?: string;
+  type?: TransactionType;
+  categoryId?: string;
+  startDate?: string;
+  endDate?: string;
+}

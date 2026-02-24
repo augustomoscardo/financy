@@ -60,10 +60,20 @@ type Mutation {
   updateTransaction(data: UpdateTransactionInput!, id: String!): TransactionModel!
 }
 
+type PaginationInfo {
+  currentPage: Int!
+  hasNextPage: Boolean!
+  hasPreviousPage: Boolean!
+  itemsPerPage: Int!
+  totalItems: Int!
+  totalPages: Int!
+}
+
 type Query {
   getAllUsers: [UserModel!]!
   getCategories: [CategoryModel!]!
   getTransactions: [TransactionModel!]!
+  getTransactionsPaginated(filters: TransactionFilters, limit: Int! = 10, page: Int! = 1): TransactionConnection!
   getUser(id: String!): UserModel!
   hello: String!
 }
@@ -78,6 +88,19 @@ type RegisterOutput {
   refreshToken: String!
   token: String!
   user: UserModel!
+}
+
+type TransactionConnection {
+  pagination: PaginationInfo!
+  transactions: [TransactionModel!]!
+}
+
+input TransactionFilters {
+  categoryId: String
+  endDate: DateTimeISO
+  startDate: DateTimeISO
+  title: String
+  type: TransactionType
 }
 
 type TransactionModel {

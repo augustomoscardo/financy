@@ -1,5 +1,7 @@
-import { CreateTransactionInput, UpdateTransactionInput } from "../dtos/input/transaction.input";
+import { CreateTransactionInput, TransactionFilters, UpdateTransactionInput } from "../dtos/input/transaction.input";
 import { prismaClient } from "../lib/prisma";
+import { TransactionConnection } from "../dtos/output/transaction.output";
+import { Prisma } from "@prisma/client";
 
 export class TransactionService {
   async createTransaction(data: CreateTransactionInput, userId: string) {
@@ -104,5 +106,80 @@ export class TransactionService {
         categoryId
       }
     })
+  }
+
+  async getTransactionsPaginated(
+    userId: string,
+    page: number,
+    limit: number,
+    filters?: TransactionFilters
+  ): Promise<TransactionConnection> {
+    // 1. Validar e normalizar inputs
+    const validPage = Math.max(1, page);
+    const validLimit = Math.min(100, Math.max(1, limit)); // Máx 100 por página
+    const skip = (validPage - 1) * validLimit;
+
+    // 2. Construir where clause com filtros
+    const where: Prisma.TransactionWhereInput = {
+      userId,
+    };
+
+    if (filters?.title) {
+      where.title = {
+        contains: filters.title,
+      };
+    }
+
+    if (filters?.type) {
+      where.type = filters.type;
+    }
+
+    if (filters?.categoryId) {
+      where.categoryId = filters.categoryId;
+    }
+
+    if (filters?.startDate || filters?.endDate) {
+      where.date = {};
+      if (filters.startDate) {
+        where.date.gte = filters.startDate;
+      }
+      if (filters.endDate) {
+        where.date.lte = filters.endDate;
+      }
+    }
+
+    // 3. Executar queries em paralelo (otimização)
+    const [transactions, totalItems] = await Promise.all([
+      prismaClient.transaction.findMany({
+        where,
+        skip,
+        take: validLimit,
+        include: {
+          category: true,
+        },
+        orderBy: {
+          date: "desc",
+        },
+      }),
+      prismaClient.transaction.count({ where }),
+    ]);
+
+    // 4. Calcular metadados de paginação
+    const totalPages = Math.ceil(totalItems / validLimit);
+    const hasNextPage = validPage < totalPages;
+    const hasPreviousPage = validPage > 1;
+
+    // 5. Retornar resultado estruturado
+    return {
+      transactions,
+      pagination: {
+        currentPage: validPage,
+        totalPages,
+        totalItems,
+        itemsPerPage: validLimit,
+        hasNextPage,
+        hasPreviousPage,
+      },
+    };
   }
 }

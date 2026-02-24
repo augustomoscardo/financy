@@ -3,6 +3,24 @@ import { Field, InputType, GraphQLISODateTime } from "type-graphql";
 
 
 @InputType()
+export class TransactionFilters {
+  @Field(() => String, { nullable: true })
+  title?: string;
+
+  @Field(() => TransactionType, { nullable: true })
+  type?: TransactionType;
+
+  @Field(() => String, { nullable: true })
+  categoryId?: string;
+
+  @Field(() => GraphQLISODateTime, { nullable: true })
+  startDate?: Date;
+
+  @Field(() => GraphQLISODateTime, { nullable: true })
+  endDate?: Date;
+}
+
+@InputType()
 export class CreateTransactionInput {
   @Field(() => String)
   title!: string;

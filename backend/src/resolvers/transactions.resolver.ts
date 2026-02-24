@@ -1,14 +1,15 @@
-import { Arg, FieldResolver, Mutation, Query, Resolver, Root, UseMiddleware } from "type-graphql";
+import { Arg, FieldResolver, Int, Mutation, Query, Resolver, Root, UseMiddleware } from "type-graphql";
 import { isAuth } from "../middlewares/auth.middleware";
 import { TransactionService } from "../services/transaction.service";
 import { TransactionModel } from "../models/transaction.model";
 import { UserModel } from "../models/user.model";
 import { UserService } from "../services/user.service";
-import { CreateTransactionInput, UpdateTransactionInput } from "../dtos/input/transaction.input";
+import { CreateTransactionInput, TransactionFilters, UpdateTransactionInput } from "../dtos/input/transaction.input";
 import { GqlUser } from "../graphql/decorators/user.decorator";
 import { User } from "@prisma/client";
 import { CategoryModel } from "../models/category.model";
 import { CategoryService } from "../services/category.service";
+import { TransactionConnection } from "../dtos/output/transaction.output";
 
 
 @Resolver(() => TransactionModel)
@@ -23,6 +24,16 @@ export class TransactionResolver {
     @GqlUser() user: User
   ) {
     return this.transactionService.getTransactionsByUserId(user.id)
+  }
+
+  @Query(() => TransactionConnection)
+  async getTransactionsPaginated(
+    @Arg("page", () => Int, { defaultValue: 1 }) page: number,
+    @Arg("limit", () => Int, { defaultValue: 10 }) limit: number,
+    @Arg("filters", () => TransactionFilters, { nullable: true }) filters: TransactionFilters | undefined,
+    @GqlUser() user: User
+  ) {
+    return this.transactionService.getTransactionsPaginated(user.id, page, limit, filters)
   }
 
   @Mutation(() => TransactionModel)
