@@ -1,4 +1,5 @@
 import logoImg from "@/assets/logo.svg";
+import { useEffect } from "react";
 import {
   Card,
   CardContent,
@@ -22,6 +23,7 @@ import { toast } from "sonner";
 const loginFormSchema = z.object({
   email: z.string().min(1, "O email é obrigatório").email("Email inválido"),
   password: z.string().min(6, "A senha deve ter no mínimo 6 caracteres"),
+  rememberMe: z.boolean(),
 });
 
 type LoginFormData = z.infer<typeof loginFormSchema>;
@@ -34,10 +36,20 @@ export function Login() {
     defaultValues: {
       email: "",
       password: "",
+      rememberMe: false,
     },
   });
 
   const { errors, isSubmitting } = form.formState;
+
+  useEffect(() => {
+    const rememberedEmail = localStorage.getItem("@financy_remembered_email");
+
+    if (rememberedEmail) {
+      form.setValue("email", rememberedEmail);
+      form.setValue("rememberMe", true);
+    }
+  }, [form]);
 
   async function handleLogin(data: LoginFormData) {
     try {
@@ -47,6 +59,12 @@ export function Login() {
       })
 
       if (loginMutate) {
+        if (data.rememberMe) {
+          localStorage.setItem("@financy_remembered_email", data.email);
+        } else {
+          localStorage.removeItem("@financy_remembered_email");
+        }
+
         toast.success("Logged in successfully!")
       }
     } catch (error: unknown) {
@@ -72,6 +90,7 @@ export function Login() {
           <form
             onSubmit={form.handleSubmit(handleLogin)}
             className="flex flex-col gap-4"
+            autoComplete="on"
           >
             <Controller
               name="email"
@@ -90,6 +109,8 @@ export function Login() {
                       <Input
                         {...field}
                         id={field.name}
+                        type="email"
+                        autoComplete="username"
                         placeholder="mail@example.com"
                         className="border-none outline-none focus:ring-0 focus-visible:ring-0 p-0 shadow-none placeholder:text-gray-400 rounded-none h-4 leading-[18px]"
                       />
@@ -122,6 +143,7 @@ export function Login() {
                         {...field}
                         id={field.name}
                         type="password"
+                        autoComplete="current-password"
                         placeholder="Digite sua senha"
                         className="border-none outline-none focus:ring-0 focus-visible:ring-0 p-0 shadow-none placeholder:text-gray-400 rounded-none h-4 leading-[18px]"
                       />
@@ -149,6 +171,7 @@ export function Login() {
                   id="remind-me"
                   type="checkbox"
                   className="w-4 h-4 cursor-pointer"
+                  {...form.register("rememberMe")}
                 />
                 <Label
                   htmlFor="remind-me"
@@ -158,7 +181,7 @@ export function Login() {
                 </Label>
               </div>
               <Link
-                to="#"
+                to="/forgot-password"
                 className="text-sm text-brand-base text-decoration-none hover:underline hover:text-brand-dark leading-5"
               >
                 Recuperar senha

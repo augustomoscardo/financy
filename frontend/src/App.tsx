@@ -3,6 +3,7 @@ import { Layout } from "./components/layout";
 
 import { Routes, Route, Outlet, Navigate } from "react-router-dom";
 import { Signup } from "./pages/auth/signup";
+import { ForgotPassword } from "./pages/auth/forgot-password";
 import { useAuthStore } from "./stores/auth";
 import { Dashboard } from "./pages/dashboard";
 import { Transactions } from "./pages/transactions";
@@ -28,6 +29,7 @@ export default function App() {
         <Route element={<PublicRoute />}>
           <Route path="/login" element={<Login />} />
           <Route path="/signup" element={<Signup />} />
+          <Route path="/forgot-password" element={<ForgotPassword />} />
         </Route>
 
         <Route element={<PrivateRoute />}>

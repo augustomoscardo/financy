@@ -10,10 +10,10 @@
 - [x] Deve ser possível deletar uma categoria
 - [x] Deve ser possível editar uma categoria
 - [x] Deve ser possível listar todas as categorias
-- [] Aplicar paginação na listagem de transação
+- [x] Aplicar paginação na listagem de transação
 
 - [x] É obrigatória a criação de uma aplicação React usando GraphQL para consultas na API e Vite como `bundler`;
-- [ ] Siga o mais fielmente possível o layout do Figma;
+- [x] Siga o mais fielmente possível o layout do Figma;
 
 ## Tools
 
