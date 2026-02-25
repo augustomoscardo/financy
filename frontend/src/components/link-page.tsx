@@ -11,14 +11,15 @@ export function LinkPage({ name, destination }: LinkPageProps) {
   const isActive = location.pathname === destination;
 
   return (
-    <Link to={destination}>
-      <Button
-        size="default"
-        variant={isActive ? "default" : "ghost"}
-        className={`p-0 bg-transparent outline-none border-none shadow-none text-gray-600 text-sm hover:bg-transparent hover:underline hover:text-brand-base ${isActive ? "cursor-default text-brand-base font-semibold" : " cursor-pointer"}`}
-      >
+    <Button
+      asChild
+      size="default"
+      variant={isActive ? "default" : "ghost"}
+      className={`p-0 bg-transparent outline-none border-none shadow-none text-gray-600 text-sm hover:bg-transparent hover:underline hover:text-brand-base ${isActive ? "cursor-default text-brand-base font-semibold" : " cursor-pointer"}`}
+    >
+      <Link to={destination} aria-current={isActive ? "page" : undefined}>
         {name}
-      </Button>
-    </Link>
+      </Link>
+    </Button>
   )
 }

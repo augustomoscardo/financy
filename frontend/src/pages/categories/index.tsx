@@ -63,24 +63,24 @@ export function Categories() {
 
   return (
     <Page className="flex flex-col gap-8">
-      <div className="flex items-center justify-between">
+      <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
         <div className="flex flex-col gap-[2px]">
           <h1 className="text-2xl font-bold text-gray-800">Categorias</h1>
           <p className="text-base text-gray-600">Organize suas transações por categorias.</p>
         </div>
-        <Button className="flex items-center gap-2 bg-brand-base cursor-pointer text-white hover:bg-brand-dark"
+        <Button className="w-full sm:w-auto flex items-center justify-center gap-2 bg-brand-base cursor-pointer text-white hover:bg-brand-dark"
           onClick={() => categoryDialog.onOpenChange(true)}>
           <Plus size={16} />
           Nova categoria
         </Button>
       </div>
 
-      <div className="grid grid-cols-3 gap-6">
+      <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3 sm:gap-6">
         <Card className="p-6 flex flex-col gap-4 w-full">
           <CardHeader className="p-0">
             <CardTitle className="flex items-center gap-4">
               <Tag size={24} className="text-gray-700" />
-              <h3 className="text-gray-800 text-[38px] leading-8 font-bold">{totalCategories}</h3>
+              <h3 className="text-gray-800 text-3xl sm:text-[38px] leading-8 font-bold">{totalCategories}</h3>
             </CardTitle>
           </CardHeader>
           <CardContent className="p-0">
@@ -91,7 +91,7 @@ export function Categories() {
           <CardHeader className="p-0">
             <CardTitle className="flex items-center gap-4">
               <ArrowUpDown size={24} className="text-purple-base" />
-              <h3 className="text-gray-800 text-[38px] leading-8 font-bold">{totalTransactions}</h3>
+              <h3 className="text-gray-800 text-3xl sm:text-[38px] leading-8 font-bold">{totalTransactions}</h3>
             </CardTitle>
           </CardHeader>
           <CardContent className="p-0">
@@ -108,7 +108,7 @@ export function Categories() {
                     size={24}
                     className={getCategoryColor(mostUsedCategory.color).textClass}
                   />
-                  <h3 className="text-gray-800 text-[38px] leading-8 font-bold">{mostUsedCategory.name}</h3>
+                  <h3 className="text-gray-800 text-2xl sm:text-[38px] leading-8 font-bold break-words">{mostUsedCategory.name}</h3>
                 </>
               ) : (
                 <>
@@ -124,7 +124,7 @@ export function Categories() {
       </div>
 
       {loading && (
-        <div className="grid grid-cols-4  gap-4">
+        <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-4">
           {Array.from({ length: 4 }).map((_, index) => (
             <Card className="p-6" key={index}>
               <CardContent className="p-0 flex flex-col gap-5">
@@ -150,7 +150,7 @@ export function Categories() {
       )}
 
       {!loading && categories.length > 0 && (
-        <div className="grid grid-cols-4  gap-4">
+        <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-4">
           {categories.map((category) => {
             const categoryColor = getCategoryColor(category.color)
 

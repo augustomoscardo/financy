@@ -66,7 +66,7 @@ export function Profile() {
 
   return (
     <Page className="">
-      <Card className="max-w-md w-full p-8 flex flex-col gap-8 mx-auto">
+      <Card className="max-w-md w-full p-5 sm:p-8 flex flex-col gap-6 sm:gap-8 mx-auto">
         <CardHeader className="flex flex-col gap-6 items-center gap p-0">
           <Avatar className="p-0 w-16 h-16">
             <AvatarFallback className="bg-gray-300 text-gray-800 font-medium text-2xl leading-10">

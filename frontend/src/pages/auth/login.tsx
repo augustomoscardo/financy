@@ -74,10 +74,10 @@ export function Login() {
   }
 
   return (
-    <div className="flex flex-col items-center justify-center gap-8">
+    <div className="mx-auto flex w-full max-w-md flex-col items-center justify-center gap-6 px-1 py-4 sm:gap-8 sm:py-6">
       <img src={logoImg} alt="Logo" />
 
-      <Card className="max-w-md w-full p-8 flex flex-col gap-8">
+      <Card className="w-full p-5 sm:p-8 flex flex-col gap-6 sm:gap-8">
         <CardHeader className="flex flex-col gap-1 justify-center p-0">
           <CardTitle className="text-center font-bold text-xl text-gray-800 leading-7">
             Fazer login
@@ -165,7 +165,7 @@ export function Login() {
               }}
             />
 
-            <div className="flex items-center justify-between">
+            <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
               <div className="flex items-center gap-2">
                 <Input
                   id="remind-me"

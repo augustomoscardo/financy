@@ -131,288 +131,292 @@ export function Transactions() {
 
   return (
     <Page className="flex flex-col gap-8">
-      <div className="flex items-center justify-between">
+      <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
         <div className="flex flex-col gap-[2px]">
           <h1 className="text-2xl font-bold text-gray-800">Transações</h1>
           <p className="text-base text-gray-600">Gerencie todas as suas transações financeiras.</p>
         </div>
         <Button
-          className="flex items-center gap-2 bg-brand-base cursor-pointer text-white hover:bg-brand-dark "
+          className="w-full sm:w-auto flex items-center justify-center gap-2 bg-brand-base cursor-pointer text-white hover:bg-brand-dark "
           onClick={() => newTransactionDialog.onOpenChange(true)}>
           <Plus size={16} />
           Nova transação
         </Button>
       </div>
 
-      <Card className="px-6 py-5 flex items-center gap-2">
-        <Controller
-          name="title"
-          control={form.control}
-          render={({ field }) => {
-            return (
-              <Field className="gap-2">
-                <FieldLabel htmlFor={field.name} className="text-gray-700">
-                  Buscar
-                </FieldLabel>
-                <div
-                  className="flex items-center gap-3 border border-gray-300 rounded-md px-3 py-[14px] h-12"
-                >
-                  <Search size={16} className="text-gray-400" />
-                  <Input
-                    {...field}
-                    id={field.name}
-                    placeholder="Buscar por descrição"
-                    className="border-none outline-none focus:ring-0 focus-visible:ring-0 p-0 shadow-none placeholder:text-gray-400 rounded-none"
-                    onChange={field.onChange}
-                  />
-                </div>
-              </Field>
-            );
-          }}
-        />
+      <Card className="px-4 py-4 sm:px-6 sm:py-5">
+        <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-4 sm:gap-4">
+          <Controller
+            name="title"
+            control={form.control}
+            render={({ field }) => {
+              return (
+                <Field className="gap-2">
+                  <FieldLabel htmlFor={field.name} className="text-gray-700">
+                    Buscar
+                  </FieldLabel>
+                  <div
+                    className="flex items-center gap-3 border border-gray-300 rounded-md px-3 py-[14px] h-12"
+                  >
+                    <Search size={16} className="text-gray-400" />
+                    <Input
+                      {...field}
+                      id={field.name}
+                      placeholder="Buscar por descrição"
+                      className="border-none outline-none focus:ring-0 focus-visible:ring-0 p-0 shadow-none placeholder:text-gray-400 rounded-none"
+                      onChange={field.onChange}
+                    />
+                  </div>
+                </Field>
+              );
+            }}
+          />
 
-        <Controller
-          name="type"
-          control={form.control}
-          render={({ field }) => {
-            return (
-              <Field className="gap-2">
-                <FieldLabel htmlFor={field.name} className="text-gray-700">
-                  Tipo
-                </FieldLabel>
-                <Select
-                  value={field.value}
-                  onValueChange={(value) => {
-                    setCurrentPage(1)
-                    field.onChange(value)
-                  }}
-                >
-                  <SelectTrigger className="h-12 px-3 py-[14px]">
-                    <SelectValue placeholder="Selecione um tipo" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    <SelectGroup>
-                      <SelectItem value="all">Todos</SelectItem>
-                      <SelectItem value="income">Entradas</SelectItem>
-                      <SelectItem value="outcome">Saídas</SelectItem>
-                    </SelectGroup>
-                  </SelectContent>
-                </Select>
-              </Field>
-            );
-          }}
-        />
+          <Controller
+            name="type"
+            control={form.control}
+            render={({ field }) => {
+              return (
+                <Field className="gap-2">
+                  <FieldLabel htmlFor={field.name} className="text-gray-700">
+                    Tipo
+                  </FieldLabel>
+                  <Select
+                    value={field.value}
+                    onValueChange={(value) => {
+                      setCurrentPage(1)
+                      field.onChange(value)
+                    }}
+                  >
+                    <SelectTrigger className="h-12 px-3 py-[14px]">
+                      <SelectValue placeholder="Selecione um tipo" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectGroup>
+                        <SelectItem value="all">Todos</SelectItem>
+                        <SelectItem value="income">Entradas</SelectItem>
+                        <SelectItem value="outcome">Saídas</SelectItem>
+                      </SelectGroup>
+                    </SelectContent>
+                  </Select>
+                </Field>
+              );
+            }}
+          />
 
-        <Controller
-          name="category"
-          control={form.control}
-          render={({ field }) => {
-            return (
-              <Field className="gap-2">
-                <FieldLabel htmlFor={field.name} className="text-gray-700">
-                  Categoria
-                </FieldLabel>
-                <Select
-                  value={field.value}
-                  onValueChange={field.onChange}
-                  disabled={loading}
-                >
-                  <SelectTrigger className="h-12 px-3 py-[14px]">
-                    <SelectValue placeholder="Selecione uma categoria" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    <SelectGroup>
-                      <SelectItem value="all">Todas</SelectItem>
-                      {transactionsCategories.map((category) => (
-                        <SelectItem key={category.id} value={category.id}>
-                          {category.name}
-                        </SelectItem>
-                      ))}
-                    </SelectGroup>
-                  </SelectContent>
-                </Select>
-              </Field>
-            );
-          }}
-        />
+          <Controller
+            name="category"
+            control={form.control}
+            render={({ field }) => {
+              return (
+                <Field className="gap-2">
+                  <FieldLabel htmlFor={field.name} className="text-gray-700">
+                    Categoria
+                  </FieldLabel>
+                  <Select
+                    value={field.value}
+                    onValueChange={field.onChange}
+                    disabled={loading}
+                  >
+                    <SelectTrigger className="h-12 px-3 py-[14px]">
+                      <SelectValue placeholder="Selecione uma categoria" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectGroup>
+                        <SelectItem value="all">Todas</SelectItem>
+                        {transactionsCategories.map((category) => (
+                          <SelectItem key={category.id} value={category.id}>
+                            {category.name}
+                          </SelectItem>
+                        ))}
+                      </SelectGroup>
+                    </SelectContent>
+                  </Select>
+                </Field>
+              );
+            }}
+          />
 
-        <Controller
-          name="period"
-          control={form.control}
-          render={({ field }) => {
-            return (
-              <Field className="gap-2">
-                <FieldLabel htmlFor={field.name} className="text-gray-700">
-                  Período
-                </FieldLabel>
-                <Select
-                  value={field.value}
-                  onValueChange={field.onChange}
-                >
-                  <SelectTrigger className="h-12 px-3 py-[14px]">
-                    <SelectValue placeholder="Selecione um período" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    <SelectGroup>
-                      <SelectItem value="all">Todas</SelectItem>
-                      {transactionsPeriods.map((period) => (
-                        <SelectItem key={period} value={period}>
-                          {format(new Date(`${period}-01T00:00:00`), "MMMM / yyyy", { locale: ptBR })}
-                        </SelectItem>
-                      ))}
-                    </SelectGroup>
-                  </SelectContent>
-                </Select>
-              </Field>
-            );
-          }}
-        />
+          <Controller
+            name="period"
+            control={form.control}
+            render={({ field }) => {
+              return (
+                <Field className="gap-2">
+                  <FieldLabel htmlFor={field.name} className="text-gray-700">
+                    Período
+                  </FieldLabel>
+                  <Select
+                    value={field.value}
+                    onValueChange={field.onChange}
+                  >
+                    <SelectTrigger className="h-12 px-3 py-[14px]">
+                      <SelectValue placeholder="Selecione um período" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectGroup>
+                        <SelectItem value="all">Todas</SelectItem>
+                        {transactionsPeriods.map((period) => (
+                          <SelectItem key={period} value={period}>
+                            {format(new Date(`${period}-01T00:00:00`), "MMMM / yyyy", { locale: ptBR })}
+                          </SelectItem>
+                        ))}
+                      </SelectGroup>
+                    </SelectContent>
+                  </Select>
+                </Field>
+              );
+            }}
+          />
+        </div>
       </Card>
 
       <Card className="overflow-hidden">
-        <Table>
-          <TableHeader>
-            <TableRow>
-              <TableHead className="py-5 px-6 text-xs text-gray-500 tracking-wide font-medium uppercase bg-white">Descrição</TableHead>
-              <TableHead className="py-5 px-6 text-xs text-gray-500 tracking-wide font-medium uppercase bg-white">Data</TableHead>
-              <TableHead className="py-5 px-6 text-center text-xs text-gray-500 tracking-wide font-medium uppercase bg-white">Categoria</TableHead>
-              <TableHead className="py-5 px-6 text-xs text-gray-500 tracking-wide font-medium uppercase bg-white">Tipo</TableHead>
-              <TableHead className="py-5 px-6 text-right text-xs text-gray-500 tracking-wide font-medium uppercase bg-white">Valor</TableHead>
-              <TableHead className="py-5 px-6 text-right text-xs text-gray-500 tracking-wide font-medium uppercase bg-white">Ações</TableHead>
-            </TableRow>
-          </TableHeader>
-
-          <TableBody>
-            {!loading && filteredTransactions.length === 0 && (
+        <div className="overflow-x-auto">
+          <Table>
+            <TableHeader>
               <TableRow>
-                <TableCell colSpan={6} className="py-10 text-center text-sm text-gray-500">
-                  Nenhuma transação encontrada para os filtros selecionados.
-                </TableCell>
+                <TableHead className="py-5 px-6 text-xs text-gray-500 tracking-wide font-medium uppercase bg-white">Descrição</TableHead>
+                <TableHead className="hidden md:table-cell py-5 px-6 text-xs text-gray-500 tracking-wide font-medium uppercase bg-white">Data</TableHead>
+                <TableHead className="hidden md:table-cell py-5 px-6 text-center text-xs text-gray-500 tracking-wide font-medium uppercase bg-white">Categoria</TableHead>
+                <TableHead className="hidden md:table-cell py-5 px-6 text-xs text-gray-500 tracking-wide font-medium uppercase bg-white">Tipo</TableHead>
+                <TableHead className="py-5 px-6 text-right text-xs text-gray-500 tracking-wide font-medium uppercase bg-white">Valor</TableHead>
+                <TableHead className="py-5 px-6 text-right text-xs text-gray-500 tracking-wide font-medium uppercase bg-white">Ações</TableHead>
               </TableRow>
-            )}
+            </TableHeader>
 
-            {filteredTransactions.length > 0 && filteredTransactions.map((transaction) => (
-              <TableRow key={transaction.id}>
-                <TableCell className="py-5 px-6">
-                  <div className="flex items-center gap-4">
-                    <Badge className={`p-3 ${getCategoryColor(transaction.category.color).lightBgClass} ${getCategoryColor(transaction.category.color).textClass}`}>
-                      <DynamicIcon
-                        name={transaction.category.icon as React.ComponentProps<typeof DynamicIcon>["name"]}
-                      />
-                    </Badge>
-                    <span className="text-base text-gray-800 font-medium">{transaction.title}</span>
-                  </div>
-                </TableCell>
+            <TableBody>
+              {!loading && filteredTransactions.length === 0 && (
+                <TableRow>
+                  <TableCell colSpan={6} className="py-10 text-center text-sm text-gray-500">
+                    Nenhuma transação encontrada para os filtros selecionados.
+                  </TableCell>
+                </TableRow>
+              )}
 
-                <TableCell className="py-5 px-6 text-sm">{format(transaction.date as string, "dd/MM/yyyy")}</TableCell>
-
-                <TableCell className="py-5 px-6 text-center">
-                  <Badge className={`py-1 px-3 rounded-full ${getCategoryColor(transaction.category.color).lightBgClass} ${getCategoryColor(transaction.category.color).darkTextClass}`}>{transaction.category.name}</Badge>
-                </TableCell>
-
-                <TableCell>
-                  {transaction.type === 'income' ? (
-                    <div className="text-green-base flex items-center gap-2">
-                      <CircleArrowUp size={16} />
-                      Entrada
+              {filteredTransactions.length > 0 && filteredTransactions.map((transaction) => (
+                <TableRow key={transaction.id}>
+                  <TableCell className="py-5 px-6">
+                    <div className="flex items-center gap-4">
+                      <Badge className={`p-3 ${getCategoryColor(transaction.category.color).lightBgClass} ${getCategoryColor(transaction.category.color).textClass}`}>
+                        <DynamicIcon
+                          name={transaction.category.icon as React.ComponentProps<typeof DynamicIcon>["name"]}
+                        />
+                      </Badge>
+                      <span className="text-base text-gray-800 font-medium">{transaction.title}</span>
                     </div>
-                  ) : (
-                    <div className="text-red-base flex items-center gap-2">
-                      <CircleArrowDown size={16} />
-                      Saída
-                    </div>
-                  )}
-                </TableCell>
+                  </TableCell>
 
-                <TableCell className="py-5 px-6">
-                  <div className="flex items-center justify-end">
-                    <span className="text-sm text-gray-800 font-semibold">
-                      {transaction.type === 'income'
-                        ? `+ ${new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(transaction.amount)}`
-                        : `- ${new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(transaction.amount)}`}
+                  <TableCell className="hidden md:table-cell py-5 px-6 text-sm">{format(transaction.date as string, "dd/MM/yyyy")}</TableCell>
+
+                  <TableCell className="hidden md:table-cell py-5 px-6 text-center">
+                    <Badge className={`py-1 px-3 rounded-full ${getCategoryColor(transaction.category.color).lightBgClass} ${getCategoryColor(transaction.category.color).darkTextClass}`}>{transaction.category.name}</Badge>
+                  </TableCell>
+
+                  <TableCell className="hidden md:table-cell">
+                    {transaction.type === 'income' ? (
+                      <div className="text-green-base flex items-center gap-2">
+                        <CircleArrowUp size={16} />
+                        Entrada
+                      </div>
+                    ) : (
+                      <div className="text-red-base flex items-center gap-2">
+                        <CircleArrowDown size={16} />
+                        Saída
+                      </div>
+                    )}
+                  </TableCell>
+
+                  <TableCell className="py-5 px-6">
+                    <div className="flex items-center justify-end">
+                      <span className="text-sm text-gray-800 font-semibold">
+                        {transaction.type === 'income'
+                          ? `+ ${new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(transaction.amount)}`
+                          : `- ${new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(transaction.amount)}`}
+                      </span>
+                    </div>
+                  </TableCell>
+
+                  <TableCell className="py-5 px-6">
+                    <div className="flex items-center justify-end gap-2">
+                      <Button
+                        className="text-danger bg-white border border-gray-300 rounded-lg w-8 h-8 hover:bg-gray-300"
+                        onClick={() => handleOpenDeleteTransactionDialog(transaction)}
+                      >
+                        <Trash size={16} />
+                      </Button>
+                      <Button
+                        className="text-gray-700 bg-white border border-gray-300 rounded-lg w-8 h-8 hover:bg-gray-300"
+                        onClick={() => handleOpenUpdateTransactionDialog(transaction)}
+                      >
+                        <SquarePen size={16} />
+                      </Button>
+                    </div>
+                  </TableCell>
+                </TableRow>
+              ))}
+            </TableBody>
+
+            <TableFooter>
+              <TableRow>
+                <TableCell colSpan={6} className="p-0 bg-white">
+                  <div className="py-4 px-4 sm:py-5 sm:px-6 flex flex-col items-center justify-center gap-3 sm:gap-4 w-full">
+                    <span className="text-gray-700 text-sm text-center">
+                      {pagination ? `${getPaginationRange(pagination)} | ${pagination.totalItems} resultados` : "0 | 0 resultados"}
                     </span>
-                  </div>
-                </TableCell>
 
-                <TableCell className="py-5 px-6">
-                  <div className="flex items-center justify-end gap-2">
-                    <Button
-                      className="text-danger bg-white border border-gray-300 rounded-lg w-8 h-8 hover:bg-gray-300"
-                      onClick={() => handleOpenDeleteTransactionDialog(transaction)}
-                    >
-                      <Trash size={16} />
-                    </Button>
-                    <Button
-                      className="text-gray-700 bg-white border border-gray-300 rounded-lg w-8 h-8 hover:bg-gray-300"
-                      onClick={() => handleOpenUpdateTransactionDialog(transaction)}
-                    >
-                      <SquarePen size={16} />
-                    </Button>
+                    <div className="flex flex-wrap items-center justify-center gap-2">
+                      <Button
+                        variant="outline"
+                        size="icon"
+                        className="h-8 w-8"
+                        disabled={!pagination?.hasPreviousPage || loading}
+                        onClick={() => setCurrentPage((previousPage) => Math.max(previousPage - 1, 1))}
+                      >
+                        <ChevronLeft size={16} />
+                      </Button>
+
+                      {pageNumbers.map((pageNumber, index) => {
+                        if (pageNumber === "...") {
+                          return (
+                            <span key={`ellipsis-${index}`} className="h-8 min-w-8 px-2 inline-flex items-center justify-center text-gray-500 text-sm">
+                              ...
+                            </span>
+                          )
+                        }
+
+                        const isCurrentPage = pageNumber === pagination?.currentPage
+
+                        return (
+                          <Button
+                            key={pageNumber}
+                            variant={isCurrentPage ? "default" : "outline"}
+                            size="icon"
+                            className={`h-8 w-8 ${isCurrentPage ? "bg-brand-base text-white hover:bg-brand-dark" : "text-gray-700"}`}
+                            disabled={loading}
+                            onClick={() => setCurrentPage(pageNumber)}
+                          >
+                            {pageNumber}
+                          </Button>
+                        )
+                      })}
+
+                      <Button
+                        variant="outline"
+                        size="icon"
+                        className="h-8 w-8"
+                        disabled={!pagination?.hasNextPage || loading}
+                        onClick={() => setCurrentPage((previousPage) => previousPage + 1)}
+                      >
+                        <ChevronRight size={16} />
+                      </Button>
+                    </div>
                   </div>
                 </TableCell>
               </TableRow>
-            ))}
-          </TableBody>
-
-          <TableFooter>
-            <TableRow>
-              <TableCell colSpan={6} className="p-0 bg-white">
-                <div className="py-5 px-6 flex items-center justify-between w-full">
-                  <span className="text-gray-700 text-sm">
-                    {pagination ? `${getPaginationRange(pagination)} | ${pagination.totalItems} resultados` : "0 | 0 resultados"}
-                  </span>
-
-                  <div className="flex items-center gap-2">
-                    <Button
-                      variant="outline"
-                      size="icon"
-                      className="h-8 w-8"
-                      disabled={!pagination?.hasPreviousPage || loading}
-                      onClick={() => setCurrentPage((previousPage) => Math.max(previousPage - 1, 1))}
-                    >
-                      <ChevronLeft size={16} />
-                    </Button>
-
-                    {pageNumbers.map((pageNumber, index) => {
-                      if (pageNumber === "...") {
-                        return (
-                          <span key={`ellipsis-${index}`} className="h-8 min-w-8 px-2 inline-flex items-center justify-center text-gray-500 text-sm">
-                            ...
-                          </span>
-                        )
-                      }
-
-                      const isCurrentPage = pageNumber === pagination?.currentPage
-
-                      return (
-                        <Button
-                          key={pageNumber}
-                          variant={isCurrentPage ? "default" : "outline"}
-                          size="icon"
-                          className={`h-8 w-8 ${isCurrentPage ? "bg-brand-base text-white hover:bg-brand-dark" : "text-gray-700"}`}
-                          disabled={loading}
-                          onClick={() => setCurrentPage(pageNumber)}
-                        >
-                          {pageNumber}
-                        </Button>
-                      )
-                    })}
-
-                    <Button
-                      variant="outline"
-                      size="icon"
-                      className="h-8 w-8"
-                      disabled={!pagination?.hasNextPage || loading}
-                      onClick={() => setCurrentPage((previousPage) => previousPage + 1)}
-                    >
-                      <ChevronRight size={16} />
-                    </Button>
-                  </div>
-                </div>
-              </TableCell>
-            </TableRow>
-          </TableFooter>
-        </Table>
+            </TableFooter>
+          </Table>
+        </div>
       </Card>
 
       {newTransactionDialog.isOpen && (

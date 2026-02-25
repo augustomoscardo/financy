@@ -9,17 +9,22 @@ export function Header() {
   const { isAuthenticated, user } = useAuthStore((state) => state)
 
   return (
-    <div className="w-full py-4 px-12">
+    <header className="w-full px-4 py-3 sm:px-6 lg:px-12 lg:py-4">
       {isAuthenticated && (
-        <div className="flex justify-between">
+        <div className="flex items-center justify-between gap-2 lg:gap-0">
           <img src={logoImg} alt="Logo da Financy" />
-          <nav className="flex items-center gap-5">
+
+          <nav
+            aria-label="Navegação principal"
+            className="-mx-1 flex items-center gap-1 overflow-x-auto px-1 whitespace-nowrap sm:gap-2 lg:mx-0 lg:gap-5 lg:overflow-visible lg:px-0 lg:whitespace-normal"
+          >
             <LinkPage name="Dashboard" destination="/" />
             <LinkPage name="Transações" destination="/transactions" />
             <LinkPage name="Categorias" destination="/categories" />
           </nav>
-          <Link to="/profile">
-            <Button className="w-9 h-9 bg-transparent hover:bg-transparent rounded-full" asChild>
+
+          <Link to="/profile" aria-label="Abrir perfil">
+            <Button className="h-11 w-11 rounded-full bg-transparent p-0 hover:bg-transparent focus-visible:ring-2 focus-visible:ring-offset-2 lg:h-9 lg:w-9" asChild>
               <Avatar className="p-0">
                 <AvatarFallback className="bg-gray-300 text-gray-800">
                   {user?.name?.charAt(0)}
@@ -29,6 +34,6 @@ export function Header() {
           </Link>
         </div>
       )}
-    </div>
+    </header>
   )
 }

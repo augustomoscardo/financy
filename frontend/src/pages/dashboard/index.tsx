@@ -49,8 +49,8 @@ export function Dashboard() {
 
   return (
     <Page>
-      <div className="flex flex-col gap-6">
-        <div className="grid grid-cols-3 gap-6">
+      <div className="flex flex-col gap-4 sm:gap-6">
+        <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3 sm:gap-6">
           <Card className="p-6 flex flex-col gap-4 w-full">
             <CardHeader className="p-0">
               <CardTitle className="flex items-center gap-3">
@@ -59,7 +59,7 @@ export function Dashboard() {
               </CardTitle>
             </CardHeader>
             <CardContent className="p-0">
-              <span className="text-3xl text-gray-800 leading-8 font-bold">
+              <span className="text-2xl sm:text-3xl text-gray-800 leading-8 font-bold break-all">
                 {new Intl.NumberFormat("pt-BR", {
                   style: "currency",
                   currency: "BRL"
@@ -75,7 +75,7 @@ export function Dashboard() {
               </CardTitle>
             </CardHeader>
             <CardContent className="p-0">
-              <span className="text-3xl text-gray-800 leading-8 font-bold">
+              <span className="text-2xl sm:text-3xl text-gray-800 leading-8 font-bold break-all">
                 {new Intl.NumberFormat("pt-BR", {
                   style: "currency",
                   currency: "BRL"
@@ -91,7 +91,7 @@ export function Dashboard() {
               </CardTitle>
             </CardHeader>
             <CardContent className="p-0">
-              <span className="text-3xl text-gray-800 leading-8 font-bold">
+              <span className="text-2xl sm:text-3xl text-gray-800 leading-8 font-bold break-all">
                 {new Intl.NumberFormat("pt-BR", {
                   style: "currency",
                   currency: "BRL"
@@ -101,8 +101,8 @@ export function Dashboard() {
           </Card>
         </div>
 
-        <div className="grid grid-cols-3 gap-6">
-          <Card className="col-span-2 flex flex-col">
+        <div className="grid grid-cols-1 items-start gap-4 lg:grid-cols-3 sm:gap-6">
+          <Card className="lg:col-span-2 flex flex-col">
             <CardHeader className="flex flex-row items-center justify-between py-5 px-6">
               <h4 className="text-xs tracking-wide text-gray-500 uppercase font-medium">Transações Recentes</h4>
               <Link to="/transactions" className="text-sm leading-5 font-medium text-brand-base flex items-center gap-1 hover:underline hover:text-brand-dark">
@@ -114,7 +114,7 @@ export function Dashboard() {
             <CardContent className="p-0 overflow-y-auto">{transactionsLoading && (
               <>
                 {[...Array(3)].map((_, i) => (
-                  <div key={i} className="flex items-center gap-12 py-4">
+                  <div key={i} className="flex items-center gap-4 sm:gap-12 py-4">
                     <div className="flex-1 flex items-center gap-4 px-6">
                       <Skeleton className="w-12 h-12 rounded-lg" />
                       <div className="flex flex-col gap-2 flex-1">
@@ -139,8 +139,8 @@ export function Dashboard() {
 
                     return (
                       <div key={transaction.id}>
-                        <div className="flex items-center gap-12 py-4">
-                          <div className="flex-1 flex items-center gap-4 px-6 ">
+                        <div className="flex flex-col items-start gap-3 py-4 sm:flex-row sm:items-center sm:gap-12">
+                          <div className="w-full flex-1 flex items-center gap-4 px-6 ">
                             <Badge className={`p-3 rounded-lg ${categoryColor.lightBgClass}`}>
                               <DynamicIcon name={transaction.category.icon as React.ComponentProps<typeof DynamicIcon>["name"]} size={16} className={categoryColor.textClass} />
                             </Badge>
@@ -149,7 +149,7 @@ export function Dashboard() {
                               <span className="text-gray-600 leading-5 text-sm">{format(new Date(transaction.date), "dd/MM/yyyy")}</span>
                             </div>
                           </div>
-                          <Badge className={`${categoryColor.lightBgClass} ${categoryColor.darkTextClass} text-sm leading-5 font-medium rounded-full px-3 py-1 shadow-none`}>
+                          <Badge className={`${categoryColor.lightBgClass} ${categoryColor.darkTextClass} text-sm leading-5 font-medium rounded-full px-3 py-1 shadow-none ml-6 sm:ml-0`}>
                             {transaction.category.name}
                           </Badge>
                           <div className="flex items-center gap-2 px-6">
@@ -192,7 +192,7 @@ export function Dashboard() {
             </CardFooter>
           </Card>
 
-          <Card className="flex flex-col grow min-w-96">
+          <Card className="flex flex-col self-start min-w-96">
             <CardHeader className="flex flex-row items-center justify-between py-5 px-6">
               <h4 className="text-xs tracking-wide text-gray-500 uppercase font-medium">Categorias</h4>
               <Link to="/categories" className="text-sm leading-5 font-medium text-brand-base flex items-center gap-1 hover:underline hover:text-brand-dark">

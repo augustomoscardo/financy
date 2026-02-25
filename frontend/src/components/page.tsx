@@ -8,7 +8,7 @@ interface PageProps {
 
 export function Page({ children, className }: PageProps) {
   return (
-    <div className={cn("min-h-[calc(100dvh-5rem)]", className)}>
+    <div className={cn("min-h-[calc(100dvh-8.5rem)] sm:min-h-[calc(100dvh-7.5rem)] lg:min-h-[calc(100dvh-5rem)]", className)}>
       {children}
     </div>
   )
